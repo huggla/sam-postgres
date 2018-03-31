@@ -1,0 +1,107 @@
+#!/bin/sh
+set -e +a +m +s +i -f
+
+readonly BIN_DIR="$(/usr/bin/dirname "$0")"
+. "$BIN_DIR/start.stage2.functions"
+env_list="$(listfromfile "$BIN_DIR/buildtime_environment")"
+readonly NAME="$(var - NAME)"
+readonly CONFIG_FILE="$(var - CONFIG_FILE)"
+if [ -n "$CONFIG_FILE" ]
+then
+   readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+fi
+readonly RUNTIME_ENVIRONMENT="$BIN_DIR/runtime_environment"
+if [ -f "$RUNTIME_ENVIRONMENT" ]
+then
+   env_list="$env_list"$'\n'"$(listfromfile "$RUNTIME_ENVIRONMENT")"
+   makeallfromenvlist
+   /bin/rm "$RUNTIME_ENVIRONMENT"
+
+# Image-specific code
+# --------------------------------------------
+   readonly env_list
+   IFS_bak=$IFS
+   IFS=$(echo -en "\n\b,")
+   if [ ! -s "$CONFIG_FILE" ]
+   then
+      readonly config_parameters="$(var param)"
+      for param in $config_parameters
+      do
+         param_value="$(var param $param)"
+         if [ -n "$param_value" ]
+         then
+            echo -n "$param" >> "$CONFIG_FILE"
+            echo "=$param_value" >> "$CONFIG_FILE"
+         fi
+      done
+   fi
+   readonly param_hba_file="$(var param hba_file | /usr/bin/tr -d "'")"
+   if [ ! -s "$param_hba_file" ]
+   then
+      readonly HBA="$(var - HBA)"
+      for row in $HBA
+      do
+         trim "$row" >> "$param_hba_file"
+      done
+   fi
+   IFS=$IFS_bak
+   readonly param_data_directory="$(var param data_directory | /usr/bin/tr -d "'")"
+   /bin/chown $NAME:$NAME "$param_data_directory"
+   /bin/chmod 0700 "$param_data_directory"
+   readonly param_unix_socket_directories="$(var param unix_socket_directories | /usr/bin/tr -d "'")"
+   for socketdir in $param_unix_socket_directories
+   do
+      /bin/chmod g+rw "$socketdir"
+   done
+   if [ ! -s "$param_data_directory/PG_VERSION" ]
+   then
+      readonly pwfile="$(makepwfile)"
+      readonly LOCALE="$(var - LOCALE)"
+      readonly ENCODING="$(var - ENCODING)"
+      readonly TEXT_SEARCH_CONFIG="$(var - TEXT_SEARCH_CONFIG)"
+      /bin/chmod go=rx /bin
+      /usr/bin/env -i sudo -u $NAME TZ="$(var param timezone | /usr/bin/tr -d "'")" $BIN_DIR/initdb --pgdata="$param_data_directory" --locale="$LOCALE" --encoding="$ENCODING" --text-search-config="$TEXT_SEARCH_CONFIG" --username="$NAME" --pwfile="$pwfile"
+      trydeletefile "$pwfile"
+      trydeletefile "$param_data_directory/postgresql.conf"
+      trydeletefile "$param_data_directory/pg_hba.conf"
+      trydeletefile "$param_data_directory/pg_ident.conf"
+
+# internal start of server in order to allow set-up using psql-client
+# does not listen on external TCP/IP and waits until start finishes
+      /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
+      psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME --dbname $NAME"
+      makedir "$CONFIG_DIR/initdb"
+      set +f
+      IFS=$(echo -en "\n\b,")
+      for initdb_file in $CONFIG_DIR/initdb/*
+      do
+         if [ -f "$initdb_file" ]
+         then
+            case "$initdb_file" in
+               *.sh)     echo "Running $initdb_file"; . "$initdb_file" ;;
+               *.sql)    echo "Running $initdb_file"; $psql_cmd -f "$initdb_file"; echo ;;
+               *.sql.gz) echo "Running $initdb_file"; /bin/gunzip -c "$initdb_file" | $psql_cmd; echo ;;
+               *)        echo "Ignoring $initdb_file" ;;
+            esac
+            echo
+         fi
+      done
+      IFS=$IFS_bak
+      set -f
+      /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
+      /bin/chmod go= /bin
+      echo
+      echo 'PostgreSQL init process complete; ready for start up.'
+      echo
+   fi
+   if [ -n "$(var - password_postgres)" ]
+   then
+      echo '*******************************************************************************'
+      echo '* Container was started with environment variable REV_password_postgres set.  *'
+      echo '* This variable is only needed when a new database is initialized. To improve *'
+      echo '* security, restart the container without it.                                 *'
+      echo '*******************************************************************************'
+      echo
+   fi
+fi
+exec /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/postgres --config_file="$CONFIG_FILE"
