@@ -70,20 +70,6 @@ then
 # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
       psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME --dbname $NAME"
-      readonly USER="$(var - USER)"
-readonly USER_PASSWORD_FILE="$(var - USER_PASSWORD_FILE)"
-if [ -n "$USER_PASSWORD_FILE" ]
-then
-   read USER_PASSWORD < "$USER_PASSWORD_FILE"
-else
-   USER_PASSWORD="$(var - USER_PASSWORD)"
-fi
-readonly USER_PASSWORD
-readonly DATABASE="$(var - DATABASE)"
-psql -v ON_ERROR_STOP=1 --username "postgres" <<EOSQL
-   CREATE USER "$USER" WITH LOGIN NOINHERIT VALID UNTIL 'infinity' PASSWORD '$USER_PASSWORD';
-   CREATE DATABASE "$DATABASE" WITH OWNER = "postgres";
-EOSQL
       makedir "$CONFIG_DIR/initdb"
       set +f
       IFS=$(echo -en "\n\b,")
@@ -92,8 +78,7 @@ EOSQL
          if [ -f "$initdb_file" ]
          then
             case "$initdb_file" in
-               *.sh)     echo "Running $initdb_file"
-                        # initdbvars="$(var $initdb_file)"; . "$initdb_file" ;;
+               *.sh)     echo "Running $initdb_file"; . "$initdb_file" ;;
                *.sql)    echo "Running $initdb_file"; $psql_cmd -f "$initdb_file"; echo ;;
                *.sql.gz) echo "Running $initdb_file"; /bin/gunzip -c "$initdb_file" | $psql_cmd; echo ;;
                *)        echo "Ignoring $initdb_file" ;;
