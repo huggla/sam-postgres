@@ -78,7 +78,13 @@ then
          if [ -f "$initdb_file" ]
          then
             case "$initdb_file" in
-               *.sh)     echo "Running $initdb_file"; . "$initdb_file" ;;
+               *.sh)     echo "Running $initdb_file"
+                         initdb_vars="$(/bin/cat "$initdb_file" | grep -oE "^[:alnum:]* *=" | /usr/bin/awk -F= '{print $1}')"
+                         for var in $initdb_vars
+                         do
+                            readonly $var = "$(var - $var)"
+                         done
+                         . "$initdb_file" ;;
                *.sql)    echo "Running $initdb_file"; $psql_cmd -f "$initdb_file"; echo ;;
                *.sql.gz) echo "Running $initdb_file"; /bin/gunzip -c "$initdb_file" | $psql_cmd; echo ;;
                *)        echo "Ignoring $initdb_file" ;;
