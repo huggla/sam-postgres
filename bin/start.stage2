@@ -94,7 +94,7 @@ then
                                 echo "$tmp"
                                 if [ -n "$tmp" ]
                                 then
-                                   eval "readonly $var=$tmp"
+                                   eval "$var=$tmp"
                                    echo "$var"
                                 fi
                             fi
