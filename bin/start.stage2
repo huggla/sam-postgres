@@ -55,7 +55,7 @@ then
    done
    if [ ! -s "$param_data_directory/PG_VERSION" ]
    then
-      readonly pwfile="$(makepwfile)"
+      readonly pwfile="$(makepwfileforuser "$NAME")"
       readonly LOCALE="$(var - LOCALE)"
       readonly ENCODING="$(var - ENCODING)"
       readonly TEXT_SEARCH_CONFIG="$(var - TEXT_SEARCH_CONFIG)"
