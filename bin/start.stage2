@@ -80,12 +80,17 @@ then
             case "$initdb_file" in
                *.sh)     echo "Running $initdb_file"
                          initdb_vars="$(/bin/cat "$initdb_file" | /bin/grep -oE "^[[:blank:]]*(readonly )?[[:alnum:]_]* ?=" | /usr/bin/tr -d = | /bin/grep -oE "[[:alnum:]_]* ?$" | /usr/bin/sort | /usr/bin/uniq)"
+                         echo "$initdb_vars"
+                         echo "hej"
                          for var in $initdb_vars
                          do
+                            echo "$var"
                             tmp="$(var - $var)"
+                            echo "hej2"
+                            echo "$tmp"
                             if [ -n "$tmp" ]
                             then
-                               readonly $var = "$tmp"
+                               readonly $var = $tmp
                             fi
                          done
                          . "$initdb_file" ;;
