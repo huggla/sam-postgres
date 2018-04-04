@@ -79,7 +79,7 @@ then
          then
             case "$initdb_file" in
                *.sh)     echo "Running $initdb_file"
-                         initdb_vars="$(/bin/cat "$initdb_file" | grep -oE "^[:alnum:]* *=" | /usr/bin/awk -F= '{print $1}')"
+                         initdb_vars="$(/bin/cat "$initdb_file" | grep -oE "^(readonly|[:blank:])*[:alnum:]* *=" | /usr/bin/awk -F= '{print $1}')"
                          for var in $initdb_vars
                          do
                             readonly $var = "$(var - $var)"
