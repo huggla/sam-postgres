@@ -79,10 +79,14 @@ then
          then
             case "$initdb_file" in
                *.sh)     echo "Running $initdb_file"
-                         initdb_vars="$(/bin/cat "$initdb_file" | grep -oE "^(readonly|[:blank:])*[:alnum:]* *=" | /usr/bin/awk -F= '{print $1}')"
+                         initdb_vars="$(/bin/cat "$initdb_file" | /bin/grep -oE "^[[:blank:]]*(readonly )?[[:alnum:]_]* ?=" | /usr/bin/tr -d = | /bin/grep -oE "[[:alnum:]_]* ?$" | /usr/bin/sort | /usr/bin/uniq)"
                          for var in $initdb_vars
                          do
-                            readonly $var = "$(var - $var)"
+                            tmp="$(var - $var)"
+                            if [ -n "$tmp" ]
+                            then
+                               readonly $var = "$tmp"
+                            fi
                          done
                          . "$initdb_file" ;;
                *.sql)    echo "Running $initdb_file"; $psql_cmd -f "$initdb_file"; echo ;;
