@@ -85,12 +85,18 @@ then
                          for var in $initdb_vars
                          do
                             echo "$var"
-                            tmp="$(var - $var)"
-                            echo "hej2"
+                            eval "tmp=\$$var"
                             echo "$tmp"
-                            if [ -n "$tmp" ]
+                            if [ -z "$tmp" ]
                             then
-                               readonly $var = $tmp
+                                tmp="$(var - $var)"
+                                echo "hej2"
+                                echo "$tmp"
+                                if [ -n "$tmp" ]
+                                then
+                                   eval "readonly $var=$tmp"
+                                   echo "$var"
+                                fi
                             fi
                          done
                          . "$initdb_file" ;;
