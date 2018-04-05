@@ -70,7 +70,7 @@ then
 # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
       psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME --dbname $NAME"
-      makedir "$CONFIG_DIR/initdb"
+      readonly sql_dir="$CONFIG_DIR/initdb/sql"
       set +f
       IFS=$(echo -en "\n\b,")
       for initdb_file in $CONFIG_DIR/initdb/*
@@ -95,12 +95,17 @@ then
                                 fi
                             fi
                          done
-                         . "$initdb_file" ;;
-               *.sql)    echo "Running $initdb_file"; $psql_cmd -f "$initdb_file"; echo ;;
-               *.sql.gz) echo "Running $initdb_file"; /bin/gunzip -c "$initdb_file" | $psql_cmd; echo ;;
-               *)        echo "Ignoring $initdb_file" ;;
+                         . "$initdb_file"
+                         ;;
+               *.sql)    /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
+                         ;;
+               *.sql.gz) /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
+                         ;;
+               *)        echo "Ignoring $initdb_file"
+                         ;;
             esac
             echo
+            /bin/rm "$initdb_file"
          fi
       done
       IFS=$IFS_bak
