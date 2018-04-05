@@ -96,17 +96,17 @@ then
                             fi
                          done
                          . "$initdb_file"
+                         /bin/rm "$initdb_file"
                          ;;
                *.sql)    echo "Moving $initdb_file"
                          /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
                          ;;
-               *.sql.gz) echo "Extracting $initdb_file"
-                         /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
+               *.sql.gz) echo "Moving $initdb_file"
+                         /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
                          ;;
                *)        echo "Ignoring $initdb_file"
                          ;;
             esac
-            /bin/rm "$initdb_file"
          fi
       done
       for sql_file in $CONFIG_DIR/initdb/sql/*
@@ -115,15 +115,17 @@ then
          then
             case "$sql_file" in
                *.sql)    echo "Running $sql_file"
-
+                         $psql_cmd -f "$sql_file"
+                         /bin/rm "$sql_file"
                          ;;
-               *.sql.gz) echo "Extracting $initdb_file"
-                         /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
+               *.sql.gz) echo "Running $sql_file"
+                         /bin/gunzip -c "$sql_file" | $psql_cmd;
+                         /bin/rm "$sql_file"
                          ;;
                *)        echo "Ignoring $sql_file"
                          ;;
             esac
-            /bin/rm "$initdb_file"
+            echo
          fi
       done
       IFS=$IFS_bak
