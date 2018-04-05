@@ -25,6 +25,7 @@ COPY ./bin ${BIN_DIR}
 # Image-specific COPY commands.
 # ---------------------------------------------------------------------
 COPY ./extension/* /usr/local/share/postgresql/extension/
+COPY ./initdb/x01.cache.sh /etc/postgres/initdb/x01.cache.sh
 # ---------------------------------------------------------------------
     
 RUN env | grep "^BEV_" > "$BUILDTIME_ENVIRONMENT" \
