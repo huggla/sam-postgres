@@ -99,17 +99,17 @@ then
                          /bin/rm "$initdb_file"
                          ;;
                *.sql)    echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
+                         /bin/mv "$initdb_file" "$sql_dir/$(/usr/bin/basename "$initdb_file")"
                          ;;
                *.sql.gz) echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
+                         /bin/mv "$initdb_file" "$sql_dir/$(/usr/bin/basename "$initdb_file")"
                          ;;
                *)        echo "Ignoring $initdb_file"
                          ;;
             esac
          fi
       done
-      for sql_file in $CONFIG_DIR/initdb/sql/*
+      for sql_file in $sql_dir/*
       do
          if [ -f "$sql_file" ]
          then
