@@ -80,22 +80,15 @@ then
             case "$initdb_file" in
                *.sh)     echo "Running $initdb_file"
                          initdb_vars="$(/bin/cat "$initdb_file" | /bin/grep -oE "^[[:blank:]]*(readonly )?[[:alnum:]_]* ?=" | /usr/bin/tr -d = | /bin/grep -oE "[[:alnum:]_]* ?$" | /usr/bin/sort | /usr/bin/uniq)"
-                         echo "$initdb_vars"
-                         echo "hej"
                          for var in $initdb_vars
                          do
-                            echo "$var"
                             eval "tmp=\$$var"
-                            echo "$tmp"
                             if [ -z "$tmp" ]
                             then
                                 tmp="$(var - $var)"
-                                echo "hej2"
-                                echo "$tmp"
                                 if [ -n "$tmp" ]
                                 then
                                    eval "$var=$tmp"
-                                   echo "$var"
                                 fi
                             fi
                          done
