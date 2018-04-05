@@ -95,6 +95,7 @@ then
                                 fi
                             fi
                          done
+                         sql_file="$sql_dir/$(/usr/bin/basename "$initdb_file" | /usr/bin/tr -d '.sh').sql"
                          . "$initdb_file"
                          /bin/rm "$initdb_file"
                          ;;
