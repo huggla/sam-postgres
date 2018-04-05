@@ -97,14 +97,32 @@ then
                          done
                          . "$initdb_file"
                          ;;
-               *.sql)    /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
+               *.sql)    echo "Moving $initdb_file"
+                         /bin/mv "$initdb_file" "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")"
                          ;;
-               *.sql.gz) /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
+               *.sql.gz) echo "Extracting $initdb_file"
+                         /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
                          ;;
                *)        echo "Ignoring $initdb_file"
                          ;;
             esac
-            echo
+            /bin/rm "$initdb_file"
+         fi
+      done
+      for sql_file in $CONFIG_DIR/initdb/sql/*
+      do
+         if [ -f "$sql_file" ]
+         then
+            case "$sql_file" in
+               *.sql)    echo "Running $sql_file"
+
+                         ;;
+               *.sql.gz) echo "Extracting $initdb_file"
+                         /bin/gunzip -c "$initdb_file" > "$(echo "$CONFIG_DIR/initdb/sql/$(/usr/bin/basename "$initdb_file")" | /usr/bin/tr -d '.gz')"
+                         ;;
+               *)        echo "Ignoring $sql_file"
+                         ;;
+            esac
             /bin/rm "$initdb_file"
          fi
       done
