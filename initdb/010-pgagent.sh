@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
-sql_file="$sql_dir/$(/usr/bin/basename "$initdb_file" | /usr/bin/tr -d '.sh').sql"
->"$sql_file"
+
 readonly CREATE_EXTENSION_PGAGENT
 if [ "$CREATE_EXTENSION_PGAGENT" == "yes" ]
 then
