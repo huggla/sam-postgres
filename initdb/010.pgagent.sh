@@ -11,13 +11,9 @@
 # readonly sql_dir="$CONFIG_DIR/initdb/sql"
 # ---------------------------------------------------------
 
-if [ -z "$CREATE_EXTENSION_PGAGENT" ]
-then
-   readonly CREATE_EXTENSION_PGAGENT="$(var - CREATE_EXTENSION_PGAGENT)"
-fi
+readonly CREATE_EXTENSION_PGAGENT="$(var - CREATE_EXTENSION_PGAGENT)"
 if [ "$CREATE_EXTENSION_PGAGENT" == "yes" ]
 then
-   readonly CREATE_LANGUAGE_PLPGSQL="yes"
    prio="010"
    dbname="$NAME"
    sql_file="$sql_dir/$prio.$dbname.sql"
