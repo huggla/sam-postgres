@@ -113,13 +113,13 @@ then
       do
          if [ -f "$sql_file" ]
          then
+            dbname="$(echo "$sql_file" | /usr/bin/awk --field-separator '.' '{print $2}')"
             case "$sql_file" in
                *.sql)    echo "Running $sql_file"
-                         dbname="$(echo "$sql_file" | /usr/bin/awk --field-separator '.' '{print $2}')"
                          $psql_cmd --dbname="$dbname" --file="$sql_file"
                          ;;
                *.sql.gz) echo "Running $sql_file"
-                         /bin/gunzip -c "$sql_file" | $psql_cmd;
+                         /bin/gunzip -c "$sql_file" | $psql_cmd --dbname="$dbname";
                          ;;
                *)        echo "Ignoring $sql_file"
                          ;;
