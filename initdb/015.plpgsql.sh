@@ -20,5 +20,5 @@ then
    prio="015"
    dbname="$NAME"
    sql_file="$sql_dir/$prio.$dbname.sql"
-   echo "CREATE LANGUAGE IF NOT EXISTS plpgsql;" > "$sql_file"
+   echo "CREATE LANGUAGE plpgsql;" > "$sql_file"
 fi
