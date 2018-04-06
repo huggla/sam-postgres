@@ -1,8 +1,15 @@
 #!/bin/sh
 
-# set -e +a +m +s +i -f
+# Set in parent script:
+# ---------------------------------------------------------
+# set -e +a +m +s +i +f
+# IFS=$(echo -en "\n\b,")
 # readonly BIN_DIR="$(/usr/bin/dirname "$0")"
 # . "$BIN_DIR/start.stage2.functions"
+# readonly CONFIG_FILE="$(var - CONFIG_FILE)"
+# readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+# readonly sql_dir="$CONFIG_DIR/initdb/sql"
+# ---------------------------------------------------------
 
 if [ -z "$CREATE_LANGUAGE_PLPGSQL" ]
 then
@@ -12,6 +19,6 @@ if [ "$CREATE_LANGUAGE_PLPGSQL" == "yes" ]
 then
    prio="015"
    dbname="postgres"
-   sql_file="$prio.$dbname.sql
-   echo "CREATE LANGUAGE IF NOT EXISTS plpgsql;" >> "$sql_file"
+   sql_file="$sql_dir/$prio.$dbname.sql"
+   echo "CREATE LANGUAGE IF NOT EXISTS plpgsql;" > "$sql_file"
 fi
