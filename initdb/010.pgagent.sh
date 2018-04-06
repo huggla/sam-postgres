@@ -1,8 +1,15 @@
 #!/bin/sh
 
-# set -e +a +m +s +i -f
+# Set in parent script:
+# ---------------------------------------------------------
+# set -e +a +m +s +i +f
+# IFS=$(echo -en "\n\b,")
 # readonly BIN_DIR="$(/usr/bin/dirname "$0")"
 # . "$BIN_DIR/start.stage2.functions"
+# readonly CONFIG_FILE="$(var - CONFIG_FILE)"
+# readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+# readonly sql_dir="$CONFIG_DIR/initdb/sql"
+# ---------------------------------------------------------
 
 if [ -z "$CREATE_EXTENSION_PGAGENT" ]
 then
@@ -13,6 +20,6 @@ then
    readonly CREATE_LANGUAGE_PLPGSQL="yes"
    prio="010"
    dbname="postgres"
-   sql_file="$prio.$dbname.sql"
+   sql_file="$sql_dir/$prio.$dbname.sql"
    echo "CREATE EXTENSION IF NOT EXISTS pgagent;" > "$sql_file"
 fi
