@@ -4,7 +4,10 @@
 # readonly BIN_DIR="$(/usr/bin/dirname "$0")"
 # . "$BIN_DIR/start.stage2.functions"
 
-readonly CREATE_EXTENSION_PGAGENT="$(var - CREATE_EXTENSION_PGAGENT)"
+if [ -z "$CREATE_EXTENSION_PGAGENT" ]
+then
+   readonly CREATE_EXTENSION_PGAGENT="$(var - CREATE_EXTENSION_PGAGENT)"
+fi
 if [ "$CREATE_EXTENSION_PGAGENT" == "yes" ]
 then
    readonly CREATE_LANGUAGE_PLPGSQL="yes"
