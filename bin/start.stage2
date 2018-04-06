@@ -97,7 +97,7 @@ then
          if [ -f "$sql_file" ]
          then
             filename="$(/usr/bin/basename "$sql_file")"
-            dbname="$(echo "$filename" | /usr/bin/awk --field-separator '.' '{print $2}')"
+            dbname="$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
             case "$sql_file" in
                *.sql)    echo "Running $sql_file"
                          $psql_cmd --dbname="$dbname" --file="$sql_file"
