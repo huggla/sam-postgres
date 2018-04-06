@@ -100,6 +100,4 @@ ENV REV_LOCALE="en_US.UTF-8" \
     REV_param_timezone="'UTC'"
 # ---------------------------------------------------------------------
 
-ENV PATH="$BIN_DIR"
-
 CMD ["sudo","start"]
