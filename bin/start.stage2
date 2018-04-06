@@ -77,6 +77,7 @@ then
       do
          if [ -f "$initdb_file" ]
          then
+            filename="$(/usr/bin/basename "$initdb_file")"
             case "$initdb_file" in
                *.sh)     echo "Running $initdb_file"
                          initdb_vars="$(/bin/cat "$initdb_file" | /bin/grep -oE '$[[:alnum:]_]*' | /usr/bin/tr -d '$' | /usr/bin/sort | /usr/bin/uniq)"
@@ -95,14 +96,16 @@ then
                                 fi
                             fi
                          done
-                         sql_file="$sql_dir/$(/usr/bin/basename "$initdb_file" | /usr/bin/tr -d '.sh').sql"
+                         prio="$(echo "$filename" | /usr/bin/awk --field-separator '.' '{print $1}')"
+                         dbname="$(echo "$filename" | /usr/bin/awk --field-separator '.' '{print $2}')"
+                         sql_file="$sql_dir/$prio.$dbname.sql"
                          . "$initdb_file"
                          ;;
                *.sql)    echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$sql_dir/$(/usr/bin/basename "$initdb_file")"
+                         /bin/mv "$initdb_file" "$sql_dir/$filename"
                          ;;
                *.sql.gz) echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$sql_dir/$(/usr/bin/basename "$initdb_file")"
+                         /bin/mv "$initdb_file" "$sql_dir/$filename"
                          ;;
                *)        echo "Ignoring $initdb_file"
                          ;;
@@ -113,7 +116,9 @@ then
       do
          if [ -f "$sql_file" ]
          then
-            dbname="$(echo "$sql_file" | /usr/bin/awk --field-separator '.' '{print $2}')"
+            filename="$(/usr/bin/basename "$sql_file")"
+            prio="$(echo "$filename" | /usr/bin/awk --field-separator '.' '{print $1}')"
+            dbname="$(echo "$filename" | /usr/bin/awk --field-separator '.' '{print $2}')"
             case "$sql_file" in
                *.sql)    echo "Running $sql_file"
                          $psql_cmd --dbname="$dbname" --file="$sql_file"
