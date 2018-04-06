@@ -5,6 +5,7 @@
 # set -e +a +m +s +i +f
 # readonly BIN_DIR="$(/usr/bin/dirname "$0")"
 # . "$BIN_DIR/start.stage2.functions"
+# readonly NAME="$(var - NAME)"
 # readonly CONFIG_FILE="$(var - CONFIG_FILE)"
 # readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
 # readonly sql_dir="$CONFIG_DIR/initdb/sql"
@@ -17,7 +18,7 @@ fi
 if [ "$CREATE_LANGUAGE_PLPGSQL" == "yes" ]
 then
    prio="015"
-   dbname="postgres"
+   dbname="$NAME"
    sql_file="$sql_dir/$prio.$dbname.sql"
    echo "CREATE LANGUAGE IF NOT EXISTS plpgsql;" > "$sql_file"
 fi
