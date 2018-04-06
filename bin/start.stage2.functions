@@ -4,17 +4,17 @@ var(){
    then
       local tmp="$env_list"
    else
-      local tmp="$(echo $env_list | /usr/bin/awk -v section=$1 -F_ '$1==section{s=""; for (i=2; i < NF; i++) s = s $i "_"; print s $NF}')"
+      local tmp="$(echo $env_list | /usr/bin/awk --assign section=$1 --field-separator '_' '$1==section{s=""; for (i=2; i < NF; i++) s = s $i "_"; print s $NF}')"
    fi
    if [ -z "$2" ]
    then
-      echo $tmp | /usr/bin/awk -F= '{print $1}'
+      echo $tmp | /usr/bin/awk --field-separator '=' '{print $1}'
    else
-      echo $tmp | /usr/bin/awk -v param=$2 -F= '$1==param{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}'
+      echo $tmp | /usr/bin/awk --assign param=$2 --field-separator '=' '$1==param{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}'
    fi
 }
 makedir(){
-   local dir="$(echo "$1" | /usr/bin/tr -d "'")"
+   local dir="$(echo "$1" | /usr/bin/tr --delete "'")"
    /bin/mkdir -p "$dir"
    set +e
    /bin/chown root:$NAME "$dir"
@@ -22,7 +22,7 @@ makedir(){
    set -e
 }
 makefile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
+   local file="$(echo "$1" | /usr/bin/tr --delete "'")"
    makedir "$(/usr/bin/dirname "$file")"
    set +e
    /bin/touch "$file"
@@ -31,10 +31,8 @@ makefile(){
    set -e
 }
 trydeletefile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
-   set +e
+   local file="$(echo "$1" | /usr/bin/tr --delete "'")"
    /bin/rm -f "$file"
-   set -e
 }
 trim(){
    echo "$1" | /usr/bin/awk '{$1=$1;print}'
@@ -43,7 +41,7 @@ tolower(){
    echo "$1" | /usr/bin/tr '[:upper:]' '[:lower:]'
 }
 listfromfile(){
-   local file="$(echo "$1" | /usr/bin/tr -d "'")"
+   local file="$(echo "$1" | /usr/bin/tr --delete "'")"
    local list="$(/bin/cat "$file")"
    echo "$list" | /usr/bin/cut -c 5- | /usr/bin/tr -dc '[:alnum:]_ %,\052\055.:=/\012\047'
 }
@@ -58,7 +56,7 @@ makeallfromenvlist(){
       set -e
       for match in $matches
       do
-         local objects="$(echo "$match" | /usr/bin/awk -F= '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
+         local objects="$(echo "$match" | /usr/bin/awk --field-separator '=' '{s=""; for (i=2; i < NF; i++) s = s $i "="; print s $NF; exit;}')"
          for obj in $objects
          do
             make$type "$obj"
