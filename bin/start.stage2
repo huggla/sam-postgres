@@ -69,7 +69,7 @@ then
 # internal start of server in order to allow set-up using psql-client
 # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
-      psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME --dbname $NAME"
+      psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME"
       readonly sql_dir="$CONFIG_DIR/initdb/sql"
       set +f
       IFS=$(echo -en "\n\b,")
@@ -97,7 +97,6 @@ then
                          done
                          sql_file="$sql_dir/$(/usr/bin/basename "$initdb_file" | /usr/bin/tr -d '.sh').sql"
                          . "$initdb_file"
-                         /bin/rm "$initdb_file"
                          ;;
                *.sql)    echo "Moving $initdb_file"
                          /bin/mv "$initdb_file" "$sql_dir/$(/usr/bin/basename "$initdb_file")"
@@ -116,12 +115,11 @@ then
          then
             case "$sql_file" in
                *.sql)    echo "Running $sql_file"
-                         $psql_cmd -f "$sql_file"
-                         /bin/rm "$sql_file"
+                         dbname="$(echo "$sql_file" | /usr/bin/awk --field-separator '.' '{print $2}')"
+                         $psql_cmd --dbname="$dbname" --file="$sql_file"
                          ;;
                *.sql.gz) echo "Running $sql_file"
                          /bin/gunzip -c "$sql_file" | $psql_cmd;
-                         /bin/rm "$sql_file"
                          ;;
                *)        echo "Ignoring $sql_file"
                          ;;
@@ -137,6 +135,7 @@ then
       echo 'PostgreSQL init process complete; ready for start up.'
       echo
    fi
+   /bin/rm -rf "$CONFIG_DIR/initdb"
    if [ -n "$(var - password_postgres)" ]
    then
       echo '*******************************************************************************'
