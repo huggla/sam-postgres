@@ -69,7 +69,7 @@ then
 # internal start of server in order to allow set-up using psql-client
 # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
-      psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql -v ON_ERROR_STOP=1 --username $NAME"
+      psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username $NAME"
       readonly sql_dir="$CONFIG_DIR/initdb/sql"
       set +f
       IFS=$(echo -en "\n\b,")
