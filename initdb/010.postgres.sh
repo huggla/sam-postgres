@@ -1,6 +1,3 @@
-#!/bin/sh
-set -e
-
 readonly CREATE_EXTENSION_PGAGENT
 if [ "$CREATE_EXTENSION_PGAGENT" == "yes" ]
 then
