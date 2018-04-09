@@ -86,7 +86,7 @@ makepwfileforuser(){
          echo -n "$user_pw" > "$pwfile"
          unset user_pw
       else
-         < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32} > "$pwfile"
+         < /dev/urandom /usr/bin/tr -dc _A-Z-a-z-0-9 | /usr/bin/head -c${1:-32} > "$pwfile"
       fi
    fi
    echo "$pwfile"
