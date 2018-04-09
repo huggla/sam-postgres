@@ -70,7 +70,6 @@ RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar \
  && mkdir -p "$CONFIG_DIR/initdb/sql" \
  && /bin/chown -R root:$BEV_NAME "$CONFIG_DIR/initdb" \
  && /bin/chmod -R u=rwX,g=rX,o= "$CONFIG_DIR/initdb"
- 
 # ---------------------------------------------------------------------
 
 RUN chmod go= /bin /sbin /usr/bin /usr/sbin \
