@@ -83,10 +83,10 @@ makepwfileforuser(){
       local user_pw="$(var - password_$user_lc)"
       if [ -n "$user_pw" ]
       then
-         echo -n "$user_pw" > "$pwfile"
+         echo -n "$user_pw" > $pwfile
          unset user_pw
       else
-         < /dev/urandom /usr/bin/tr -dc _A-Z-a-z-0-9 | /usr/bin/head -c${1:-32} > "$pwfile"
+         < /dev/urandom /usr/bin/tr -dc _A-Z-a-z-0-9 | /usr/bin/head -c${1:-32} > $pwfile
       fi
    fi
    echo "$pwfile"
