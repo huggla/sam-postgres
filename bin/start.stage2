@@ -72,46 +72,29 @@ then
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
       echo
       readonly psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username postgres"
-      readonly sql_dir="$CONFIG_DIR/initdb/sql"
       set +f
-      for initdb_file in $CONFIG_DIR/initdb/*
+      initdb_files="$CONFIG_DIR/initdb/"*
+      while [ -f "$initdb_files[0]" ]
       do
-         if [ -f "$initdb_file" ]
-         then
-            filename="$(/usr/bin/basename "$initdb_file")"
-            case "$initdb_file" in
-               *.sh)     echo "Running $initdb_file"
-                         . "$initdb_file"
-                         ;;
-               *.sql)    echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$sql_dir/$filename"
-                         ;;
-               *.sql.gz) echo "Moving $initdb_file"
-                         /bin/mv "$initdb_file" "$sql_dir/$filename"
-                         ;;
-               *)        echo "Ignoring $initdb_file"
-                         ;;
-            esac
-         fi
-      done
-      for sql_file in $sql_dir/*
-      do
-         if [ -f "$sql_file" ]
-         then
-            filename="$(/usr/bin/basename "$sql_file")"
-            dbname="$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
-            case "$sql_file" in
-               *.sql)    echo "Running $sql_file"
-                         $psql_cmd --dbname="$dbname" --file="$sql_file"
-                         ;;
-               *.sql.gz) echo "Running $sql_file"
-                         /bin/gunzip -c "$sql_file" | $psql_cmd --dbname="$dbname";
-                         ;;
-               *)        echo "Ignoring $sql_file"
-                         ;;
-            esac
-            echo
-         fi
+         filename="$(/usr/bin/basename "$initdb_files[0]")"
+         dbname="$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
+         case "$initdb_files[0]" in
+            *.sh)     echo "Running $initdb_files[0]"
+                      . "$initdb_files[0]"
+                      ;;
+            *.sql)    echo "Running $initdb_files[0]"
+                      $psql_cmd --dbname="$dbname" --file="$initdb_files[0]"
+                      echo
+                      ;;
+            *.sql.gz) echo "Running $initdb_files[0]"
+                      /bin/gunzip -c "$initdb_files[0]" | $psql_cmd --dbname="$dbname";
+                      echo
+                      ;;
+            *)        echo "Ignoring $sql_file"
+                      ;;
+         esac
+         rm -f "$initdb_files[0]"
+         initdb_files="$CONFIG_DIR/initdb/"*
       done
       set -f
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
