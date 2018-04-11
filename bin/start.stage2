@@ -73,28 +73,28 @@ then
       echo
       readonly psql_cmd="/usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username postgres"
       set +f
-      initdb_files="$CONFIG_DIR/initdb/"*
-      while [ -f "$initdb_files[0]" ]
+      set -- "$CONFIG_DIR/initdb/"*
+      while [ -f "$1" ]
       do
-         filename="$(/usr/bin/basename "$initdb_files[0]")"
+         filename="$(/usr/bin/basename "$1")"
          dbname="$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
-         case "$initdb_files[0]" in
-            *.sh)     echo "Running $initdb_files[0]"
-                      . "$initdb_files[0]"
+         case "$1" in
+            *.sh)     echo "Running $1"
+                      . "$1"
                       ;;
-            *.sql)    echo "Running $initdb_files[0]"
-                      $psql_cmd --dbname="$dbname" --file="$initdb_files[0]"
+            *.sql)    echo "Running $1"
+                      $psql_cmd --dbname="$dbname" --file="$1"
                       echo
                       ;;
-            *.sql.gz) echo "Running $initdb_files[0]"
-                      /bin/gunzip -c "$initdb_files[0]" | $psql_cmd --dbname="$dbname";
+            *.sql.gz) echo "Running $1"
+                      /bin/gunzip -c "$1" | $psql_cmd --dbname="$dbname";
                       echo
                       ;;
-            *)        echo "Ignoring $sql_file"
+            *)        echo "Ignoring $1"
                       ;;
          esac
-         rm -f "$initdb_files[0]"
-         initdb_files="$CONFIG_DIR/initdb/"*
+         rm -f "$1"
+         set -- "$CONFIG_DIR/initdb/"*
       done
       set -f
       /usr/bin/env -i $BIN_DIR/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
