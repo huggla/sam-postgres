@@ -4,6 +4,7 @@ ENV CONFIG_DIR="/etc/postgres" \
     PG_MAJOR="10" \
     PG_VERSION="10.3" \
     PG_SHA256="6ea268780ee35e88c65cdb0af7955ad90b7d0ef34573867f223f14e43467931a"
+    
 ENV REV_NAME="postgres" \
     REV_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
     REV_LOCALE="en_US.UTF-8" \
