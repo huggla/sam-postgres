@@ -10,7 +10,7 @@
 # ---------------------------------------------------------
 
 readonly env_list
-readonly sudo_dir="/usr/local/sbin"
+readonly sudo_cmd="/usr/local/sbin/sudo"
 if [ "$restart" == "false" ]
 then
    IFS=$(echo -en "\n\b,")
@@ -52,16 +52,16 @@ then
       readonly ENCODING="$(var - ENCODING)"
       readonly TEXT_SEARCH_CONFIG="$(var - TEXT_SEARCH_CONFIG)"
       /bin/chmod go=rx /bin
-      /usr/bin/env -i /usr/local/sbin/sudo -u $NAME TZ="$(var param timezone | /usr/bin/tr -d "'")" $BIN_DIR/initdb --pgdata="$param_data_directory" --locale="$LOCALE" --encoding="$ENCODING" --text-search-config="$TEXT_SEARCH_CONFIG" --username=postgres --pwfile="$pwfile"
+      /usr/bin/env -i $sudo_cmd -u $NAME TZ="$(var param timezone | /usr/bin/tr -d "'")" $BIN_DIR/initdb --pgdata="$param_data_directory" --locale="$LOCALE" --encoding="$ENCODING" --text-search-config="$TEXT_SEARCH_CONFIG" --username=postgres --pwfile="$pwfile"
       trydeletefile "$pwfile"
       trydeletefile "$param_data_directory/postgresql.conf"
       trydeletefile "$param_data_directory/pg_hba.conf"
       trydeletefile "$param_data_directory/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
-      /usr/bin/env -i $sudo_dir/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
+      /usr/bin/env -i $sudo_cmd -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
       echo
-      readonly psql_cmd="/usr/bin/env -i $sudo_dir/sudo -u $NAME $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username postgres"
+      readonly psql_cmd="/usr/bin/env -i $sudo_cmd -u $NAME $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username postgres"
       set +f
       set -- "$CONFIG_DIR/initdb/"*
       while [ -f "$1" ]
@@ -87,7 +87,7 @@ then
          set -- "$CONFIG_DIR/initdb/"*
       done
       set -f
-      /usr/bin/env -i $sudo_dir/sudo -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
+      /usr/bin/env -i $sudo_cmd -u $NAME $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
       /bin/chmod go= /bin
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
@@ -104,4 +104,4 @@ then
    echo '*******************************************************************************'
    echo
 fi
-exec /usr/bin/env -i $sudo_dir/sudo -u $NAME $BIN_DIR/postgres --config_file="$CONFIG_FILE"
+exec /usr/bin/env -i $sudo_cmd -u $NAME $BIN_DIR/postgres --config_file="$CONFIG_FILE"
