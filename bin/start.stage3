@@ -10,7 +10,7 @@
 # ---------------------------------------------------------
 
 readonly env_list
-sudo_dir="/usr/local/sbin"
+readonly sudo_dir="/usr/local/sbin"
 if [ "$restart" == "false" ]
 then
    IFS=$(echo -en "\n\b,")
