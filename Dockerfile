@@ -5,7 +5,7 @@ ENV CONFIG_DIR="/etc/postgres" \
     PG_VERSION="10.3" \
     PG_SHA256="6ea268780ee35e88c65cdb0af7955ad90b7d0ef34573867f223f14e43467931a"
     
-ENV REV_NAME="postgres" \
+ENV REV_LINUX_USER="postgres" \
     REV_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
     REV_LOCALE="en_US.UTF-8" \
     REV_ENCODING="UTF8" \
@@ -48,7 +48,7 @@ RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar \
  && rm -rf /usr/src/postgresql /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && /bin/chown -R root:$REV_NAME "$CONFIG_DIR/initdb" \
+ && /bin/chown -R root:$REV_LINUX_USER "$CONFIG_DIR/initdb" \
  && /bin/chmod -R u=rwX,g=rX,o= "$CONFIG_DIR/initdb"
  
 USER sudoer
