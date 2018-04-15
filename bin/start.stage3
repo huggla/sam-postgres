@@ -38,8 +38,8 @@ then
    fi
    IFS=$IFS_bak
    readonly param_data_directory="$(var param data_directory | /usr/bin/tr -d "'")"
-   /bin/chown $LINUX_USER:$LINUX_USER "$param_data_directory"
-   /bin/chmod 0700 "$param_data_directory"
+   /bin/chown -R $LINUX_USER:$LINUX_USER "$param_data_directory"
+   /bin/chmod -R 0700 "$param_data_directory"
    readonly param_unix_socket_directories="$(var param unix_socket_directories | /usr/bin/tr -d "'")"
    for socketdir in $param_unix_socket_directories
    do
