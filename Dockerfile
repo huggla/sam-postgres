@@ -1,4 +1,4 @@
-FROM huggla/alpine
+FROM huggla/alpine:20180417
 
 ENV CONFIG_DIR="/etc/postgres" \
     PG_MAJOR="10" \
