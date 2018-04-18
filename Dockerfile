@@ -47,8 +47,6 @@ RUN apk add --no-cache --virtual .fetch-deps ca-certificates openssl tar \
  && cd / \
  && rm -rf /usr/src/postgresql /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
- && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && /bin/chown -R root:$REV_LINUX_USER "$CONFIG_DIR/initdb" \
- && /bin/chmod -R u=rwX,g=rX,o= "$CONFIG_DIR/initdb"
+ && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample
  
 USER sudoer
