@@ -105,4 +105,8 @@ then
    echo '*******************************************************************************'
    echo
 fi
+if [ -f "$BIN_DIR/start.stage4" ]
+then
+   . "$BIN_DIR/start.stage4"
+fi
 exec /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/postgres --config_file="$CONFIG_FILE"
