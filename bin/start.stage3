@@ -54,10 +54,10 @@ then
       echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chmod go=rx /bin
       /usr/bin/env -i $sudo_cmd -u $LINUX_USER TZ="$(var param timezone | /usr/bin/tr -d "'")" $BIN_DIR/initdb --pgdata="$param_data_directory" --locale="$LOCALE" --encoding="$ENCODING" --text-search-config="$TEXT_SEARCH_CONFIG" --username=postgres --pwfile="$pwfile"
-      trydeletefile "$pwfile"
-      trydeletefile "$param_data_directory/postgresql.conf"
-      trydeletefile "$param_data_directory/pg_hba.conf"
-      trydeletefile "$param_data_directory/pg_ident.conf"
+      trydelete "$pwfile"
+      trydelete "$param_data_directory/postgresql.conf"
+      trydelete "$param_data_directory/pg_hba.conf"
+      trydelete "$param_data_directory/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
