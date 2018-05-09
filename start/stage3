@@ -42,7 +42,7 @@ then
       echo
       readonly psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
       set +f
-      set -- "$VAR_CONFIG_DIR/initdb/"*
+      set -- "/environment/initdb/"*
       while [ -f "$1" ]
       do
          filename="$(/usr/bin/basename "$1")"
@@ -64,7 +64,7 @@ then
                       ;;
          esac
          /bin/rm -f "$1"
-         set -- "$VAR_CONFIG_DIR/initdb/"*
+         set -- "/environment/initdb/"*
       done
       set -f
       runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
@@ -73,7 +73,7 @@ then
       echo 'PostgreSQL init process complete; ready for start up.'
       echo
    fi
-   /bin/rm -rf "$VAR_CONFIG_DIR/initdb"
+   /bin/rm -rf "/environment/initdb"
 fi
 if [ -n "$VAR_password_postgres" ]
 then
@@ -84,4 +84,3 @@ then
    echo '*******************************************************************************'
    echo
 fi
-exec /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/postgres --config_file="$CONFIG_FILE"
