@@ -1,20 +1,16 @@
-# Set in parent script:
+# Passed from stage2:
 # ---------------------------------------------------------
 # set -e +a +m +s +i -f
-# readonly IFS_bak=$IFS
-# readonly BIN_DIR="$(/usr/bin/dirname "$0")"
-# . "$BIN_DIR/start.stage2.functions"
-# readonly LINUX_USER="$(var - LINUX_USER)"
-# readonly CONFIG_FILE="$(var - CONFIG_FILE)"
-# readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
+# . /start/stage2.functions
+# firstrun
+# IFS_bak
+# VAR_*
 # ---------------------------------------------------------
 
-readonly env_list
-readonly sudo_cmd="/usr/local/sbin/sudo"
-if [ "$restart" == "false" ]
+if [ "$firstrun" == "true" ]
 then
    IFS=$(echo -en "\n\b,")
-   if [ ! -s "$CONFIG_FILE" ]
+   if [ ! -s "$VAR_CONFIG_FILE" ]
    then
       readonly config_parameters="$(var param)"
       for param in $config_parameters
