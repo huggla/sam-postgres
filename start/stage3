@@ -23,25 +23,19 @@ then
    fi
    IFS=$IFS_bak
    dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
-   /bin/chown -R $VAR_LINUX_USER "$dataDir"
-   /bin/chmod -R 0700 "$dataDir"
-   for socketDir in $(removeSingleQuotes "$VAR_param_unix_socket_directories")
-   do
-      /bin/chmod g+rw "$socketdir"
-   done
-   if [ ! -s "$param_data_directory/PG_VERSION" ]
+   if [ ! -s "$dataDir/PG_VERSION" ]
    then
-      readonly pwfile="$(makepwfileforuser postgres)"
-      readonly LOCALE="$(var - LOCALE)"
-      readonly ENCODING="$(var - ENCODING)"
-      readonly TEXT_SEARCH_CONFIG="$(var - TEXT_SEARCH_CONFIG)"
-      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
-      /bin/chmod go=rx /bin
-      /usr/bin/env -i $sudo_cmd -u $LINUX_USER TZ="$(var param timezone | /usr/bin/tr -d "'")" $BIN_DIR/initdb --pgdata="$param_data_directory" --locale="$LOCALE" --encoding="$ENCODING" --text-search-config="$TEXT_SEARCH_CONFIG" --username=postgres --pwfile="$pwfile"
-      trydelete "$pwfile"
-      trydelete "$param_data_directory/postgresql.conf"
-      trydelete "$param_data_directory/pg_hba.conf"
-      trydelete "$param_data_directory/pg_ident.conf"
+      /bin/chown -R $VAR_LINUX_USER "$dataDir"
+      /bin/chmod -R 0700 "$dataDir"
+      readonly pwFile="$(makePwFileForUser postgres)"
+#      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
+      /bin/chown :$VAR_LINUX_USER /bin
+      /bin/chmod g=rx /bin
+      executeCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$VAR_param_data_directory\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+      tryDelete "$pwFile"
+      tryDelete "$dataDir/postgresql.conf"
+      trydelete "$dataDir/pg_hba.conf"
+      trydelete "$dataDir/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
       /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
