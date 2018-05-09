@@ -57,7 +57,7 @@ then
                       echo
                       ;;
             *.sql.gz) echo "Running $1"
-            
+                      runCommandAsLinuxUser "/usr/local/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
             
             
                       /bin/gunzip -c "$1" | $psql_cmd --dbname="$dbname";
