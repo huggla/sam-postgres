@@ -12,7 +12,7 @@ COPY ./extension/* /usr/local/share/postgresql/extension/
 COPY ./initdb /environment/initdb 
 
 RUN downloadDir="$(mktemp -d)" \
- && wget -O "$downloadDir/postgresql.tar.bz2" "https://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
+ && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
  && rm -rf "$downloadDir" \
