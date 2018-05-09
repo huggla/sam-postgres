@@ -45,6 +45,7 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_ident_file="'$CONFIG_DIR/pg_ident.conf'" \
     VAR_param_unix_socket_directories="'/var/run/postgresql'" \
     VAR_param_listen_addresses="'*'" \
-    VAR_param_timezone="'UTC'"
+    VAR_param_timezone="'UTC'" \
+    VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
 
 USER starter
