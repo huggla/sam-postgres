@@ -25,8 +25,8 @@ then
    dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
-      /bin/chown -R $VAR_LINUX_USER "$dataDir"
-      /bin/chmod -R 0700 "$dataDir"
+#      /bin/chown -R $VAR_LINUX_USER "$dataDir"
+#      /bin/chmod -R 0700 "$dataDir"
       readonly pwFile="$(makePwFileForUser postgres)"
 #      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chown :$VAR_LINUX_USER /bin
@@ -38,8 +38,9 @@ then
       trydelete "$dataDir/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
-      /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --options="-c listen_addresses='localhost'" --wait start
+      executeCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
+      
       readonly psql_cmd="/usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/psql --variable=ON_ERROR_STOP=1 --username postgres"
       set +f
       set -- "$CONFIG_DIR/initdb/"*
