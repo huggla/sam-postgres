@@ -57,28 +57,25 @@ then
                       echo
                       ;;
             *.sql.gz) echo "Running $1"
-                      runCommandAsLinuxUser "/usr/local/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
-            
-            
-                      /bin/gunzip -c "$1" | $psql_cmd --dbname="$dbname";
+                      runCommandAsLinuxUser "/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
                       echo
                       ;;
             *)        echo "Ignoring $1"
                       ;;
          esac
-         rm -f "$1"
-         set -- "$CONFIG_DIR/initdb/"*
+         /bin/rm -f "$1"
+         set -- "$VAR_CONFIG_DIR/initdb/"*
       done
       set -f
-      /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/pg_ctl --pgdata="$CONFIG_DIR" --mode=fast --wait stop
+      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       /bin/chmod go= /bin
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
       echo
    fi
-   /bin/rm -rf "$CONFIG_DIR/initdb"
+   /bin/rm -rf "$VAR_CONFIG_DIR/initdb"
 fi
-if [ -n "$(var - password_postgres)" ]
+if [ -n "$VAR_password_postgres" ]
 then
    echo '*******************************************************************************'
    echo '* Container was started with environment variable REV_password_postgres set.  *'
@@ -86,9 +83,5 @@ then
    echo '* security, restart the container without it.                                 *'
    echo '*******************************************************************************'
    echo
-fi
-if [ -f "$BIN_DIR/start.stage4" ]
-then
-   . "$BIN_DIR/start.stage4"
 fi
 exec /usr/bin/env -i $sudo_cmd -u $LINUX_USER $BIN_DIR/postgres --config_file="$CONFIG_FILE"
