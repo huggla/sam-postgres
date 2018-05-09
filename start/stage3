@@ -12,32 +12,20 @@ then
    IFS=$(echo -en "\n\b,")
    if [ ! -s "$VAR_CONFIG_FILE" ]
    then
-      readonly config_parameters="$(var param)"
-      for param in $config_parameters
-      do
-         param_value="$(var param $param)"
-         if [ -n "$param_value" ]
-         then
-            echo -n "$param" >> "$CONFIG_FILE"
-            echo "=$param_value" >> "$CONFIG_FILE"
-         fi
-      done
+      configFromVarGroup param > "$VAR_CONFIG_FILE"
    fi
-   readonly param_hba_file="$(var param hba_file | /usr/bin/tr -d "'")"
-   if [ ! -s "$param_hba_file" ]
+   if [ ! -s "$(removeSingleQuotes "$VAR_param_hba_file")" ]
    then
-      readonly HBA="$(var - HBA)"
-      for row in $HBA
+      for row in $VAR_HBA
       do
-         trim "$row" >> "$param_hba_file"
+         trim "$row" >> "VAR_$param_hba_file"
       done
    fi
    IFS=$IFS_bak
-   readonly param_data_directory="$(var param data_directory | /usr/bin/tr -d "'")"
-   /bin/chown -R $LINUX_USER:$LINUX_USER "$param_data_directory"
-   /bin/chmod -R 0700 "$param_data_directory"
-   readonly param_unix_socket_directories="$(var param unix_socket_directories | /usr/bin/tr -d "'")"
-   for socketdir in $param_unix_socket_directories
+   dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
+   /bin/chown -R $VAR_LINUX_USER "$dataDir"
+   /bin/chmod -R 0700 "$dataDir"
+   for socketDir in $(removeSingleQuotes "$VAR_param_unix_socket_directories")
    do
       /bin/chmod g+rw "$socketdir"
    done
