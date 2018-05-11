@@ -9,7 +9,7 @@ ENV CONFIG_DIR="/etc/postgres" \
 
 COPY ./start /start
 COPY ./extension/* /usr/local/share/postgresql/extension/
-COPY ./initdb /environment/initdb 
+COPY ./initdb /init/initdb 
 
 RUN downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
