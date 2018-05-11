@@ -31,7 +31,7 @@ then
 #      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chown :$VAR_LINUX_USER /bin
       /bin/chmod g=rx /bin
-      runCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$VAR_param_data_directory\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+      runCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
       tryDelete "$pwFile"
       tryDelete "$dataDir/postgresql.conf"
       trydelete "$dataDir/pg_hba.conf"
