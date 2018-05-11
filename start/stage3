@@ -34,8 +34,8 @@ then
       runCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
       tryDelete "$pwFile"
       tryDelete "$dataDir/postgresql.conf"
-      trydelete "$dataDir/pg_hba.conf"
-      trydelete "$dataDir/pg_ident.conf"
+      tryDelete "$dataDir/pg_hba.conf"
+      tryDelete "$dataDir/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
       runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
