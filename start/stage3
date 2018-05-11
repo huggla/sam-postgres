@@ -27,7 +27,7 @@ then
    then
 #      /bin/chown -R $VAR_LINUX_USER "$dataDir"
 #      /bin/chmod -R 0700 "$dataDir"
-      readonly pwFile="$(makePwFileForUser postgres)"
+      readonly pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
 #      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chown :$VAR_LINUX_USER /bin
       /bin/chmod g=rx /bin
