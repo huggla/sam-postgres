@@ -38,7 +38,7 @@ then
       tryDelete "$dataDir/pg_ident.conf"
       # internal start of server in order to allow set-up using psql-client
       # does not listen on external TCP/IP and waits until start finishes
-      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
+      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$dataDir\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
       readonly psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
       set +f
