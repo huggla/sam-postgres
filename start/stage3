@@ -18,7 +18,7 @@ then
    then
       for row in $VAR_HBA
       do
-         trim "$row" >> "VAR_$param_hba_file"
+         trim "$row" >> "$VAR_param_hba_file"
       done
    fi
    IFS=$IFS_bak
