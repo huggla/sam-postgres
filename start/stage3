@@ -14,7 +14,8 @@ then
    then
       configFromVarGroup param > "$VAR_CONFIG_FILE"
    fi
-   if [ ! -s "$(removeSingleQuotes "$VAR_param_hba_file")" ]
+   hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
+   if [ ! -s "$hbaFile" ]
    then
       for row in $VAR_HBA
       do
