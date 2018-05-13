@@ -10,6 +10,7 @@
 if [ "$firstrun" == "true" ]
 then
    IFS=$(echo -en "\n\b,")
+   /bin/chown $VAR_LINUX_USER /init/initdb
    if [ ! -s "$VAR_CONFIG_FILE" ]
    then
       configFromVarGroup param > "$VAR_CONFIG_FILE"
