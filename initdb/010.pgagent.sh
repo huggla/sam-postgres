@@ -9,11 +9,10 @@
 # readonly CONFIG_DIR="$(/usr/bin/dirname "$CONFIG_FILE")"
 # ---------------------------------------------------------
 
-readonly CREATE_EXTENSION_PGAGENT="$(var - CREATE_EXTENSION_PGAGENT)"
-if [ "$CREATE_EXTENSION_PGAGENT" == "yes" ]
+if [ "$VAR_CREATE_EXTENSION_PGAGENT" == "yes" ]
 then
    prio="010"
    dbname="postgres"
-   sql_file="$CONFIG_DIR/initdb/$prio.$dbname.sql"
+   sql_file="/init/initdb/$prio.$dbname.sql"
    echo "CREATE EXTENSION IF NOT EXISTS pgagent;" > "$sql_file"
 fi
