@@ -19,7 +19,7 @@ then
    then
       for row in $VAR_HBA
       do
-         trim "$row" >> "$VAR_param_hba_file"
+         trim "$row" >> "$hbaFile"
       done
    fi
    IFS=$IFS_bak
@@ -43,7 +43,7 @@ then
       echo
       readonly psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
       set +f
-      set -- "$VAR_INIT_DIR/initdb/"*
+      set -- "/init/initdb/"*
       while [ -f "$1" ]
       do
          filename="$(/usr/bin/basename "$1")"
@@ -65,7 +65,7 @@ then
                       ;;
          esac
          /bin/rm -f "$1"
-         set -- "$VAR_INIT_DIR/initdb/"*
+         set -- "/init/initdb/"*
       done
       set -f
       runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
@@ -74,7 +74,7 @@ then
       echo 'PostgreSQL init process complete; ready for start up.'
       echo
    fi
-   /bin/rm -rf "$VAR_INIT_DIR/initdb"
+   /bin/rm -rf "/init/initdb"
 fi
 if [ -n "$VAR_password_postgres" ]
 then
