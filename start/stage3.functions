@@ -1,0 +1,34 @@
+# Set in stage2:
+# -------------------------------------------
+# set -e +a +m +s +i -f
+# VAR_*
+
+processInitdbDir(){
+   local psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
+   set +f
+   set -- "/init/initdb/"*
+   while [ -f "$1" ]
+   do
+      local filename="$(/usr/bin/basename "$1")"
+      local dbname=${filename%.*}
+      local dbname=${dbname#*.}
+      case "$1" in
+         *.sh)     echo "Running $1"
+                   . "$1"
+                   ;;
+         *.sql)    echo "Running $1"
+                   runCommandAsLinuxUser "$psql_cmd --dbname=$dbname --file=\"$1\""
+                   echo
+                   ;;
+         *.sql.gz) echo "Running $1"
+                   runCommandAsLinuxUser "/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
+                   echo
+                   ;;
+         *)        echo "Ignoring $1"
+                   ;;
+      esac
+      /bin/rm -f "$1"
+      set -- "/init/initdb/"*
+   done
+   set -f
+}
