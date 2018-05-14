@@ -7,6 +7,8 @@
 # VAR_*
 # ---------------------------------------------------------
 
+. /start/stage3.functions
+
 if [ "$firstrun" == "true" ]
 then
    local IFS=$(echo -en "\n\b,")
@@ -27,10 +29,7 @@ then
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
-#      /bin/chown -R $VAR_LINUX_USER "$dataDir"
-#      /bin/chmod -R 0700 "$dataDir"
       local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
-#      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chown :$VAR_LINUX_USER /bin
       /bin/chmod g=rx /bin
       runCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
@@ -38,12 +37,10 @@ then
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
-      # internal start of server in order to allow set-up using psql-client
-      # does not listen on external TCP/IP and waits until start finishes
       runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
-
-runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+      processInitdbDir
+      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       /bin/chmod go= /bin
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
