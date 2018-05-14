@@ -49,6 +49,7 @@ then
       do
          filename="$(/usr/bin/basename "$1")"
          dbname=${filename%.*}
+         dbname=${filename#*.}
        #  "$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
          case "$1" in
             *.sh)     echo "Running $1"
