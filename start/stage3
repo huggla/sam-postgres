@@ -9,13 +9,13 @@
 
 if [ "$firstrun" == "true" ]
 then
-   IFS=$(echo -en "\n\b,")
+   local IFS=$(echo -en "\n\b,")
    /bin/chown $VAR_LINUX_USER /init/initdb
    if [ ! -s "$VAR_CONFIG_FILE" ]
    then
       configFromVarGroup param > "$VAR_CONFIG_FILE"
    fi
-   hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
+   local hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
    if [ ! -s "$hbaFile" ]
    then
       for row in $VAR_HBA
@@ -23,13 +23,13 @@ then
          trim "$row" >> "$hbaFile"
       done
    fi
-   IFS=$IFS_bak
-   dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
+   local IFS=$IFS_bak
+   local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
 #      /bin/chown -R $VAR_LINUX_USER "$dataDir"
 #      /bin/chmod -R 0700 "$dataDir"
-      readonly pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
+      local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
 #      echo 'Defaults env_keep = "TZ"' >> "/etc/sudoers.d/docker2"
       /bin/chown :$VAR_LINUX_USER /bin
       /bin/chmod g=rx /bin
@@ -42,35 +42,8 @@ then
       # does not listen on external TCP/IP and waits until start finishes
       runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
-      readonly psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
-      set +f
-      set -- "/init/initdb/"*
-      while [ -f "$1" ]
-      do
-         filename="$(/usr/bin/basename "$1")"
-         dbname=${filename%.*}
-         dbname=${dbname#*.}
-       #  "$(echo "$filename" | /usr/bin/awk -F '.' '{print $2}')"
-         case "$1" in
-            *.sh)     echo "Running $1"
-                      . "$1"
-                      ;;
-            *.sql)    echo "Running $1"
-                      runCommandAsLinuxUser "$psql_cmd --dbname=$dbname --file=\"$1\""
-                      echo
-                      ;;
-            *.sql.gz) echo "Running $1"
-                      runCommandAsLinuxUser "/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
-                      echo
-                      ;;
-            *)        echo "Ignoring $1"
-                      ;;
-         esac
-         /bin/rm -f "$1"
-         set -- "/init/initdb/"*
-      done
-      set -f
-      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+
+runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       /bin/chmod go= /bin
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
