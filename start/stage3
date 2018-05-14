@@ -2,14 +2,14 @@
 # ---------------------------------------------------------
 # set -e +a +m +s +i -f
 # . /start/stage2.functions
-# firstrun
+# isFirstRun
 # IFS_bak
 # VAR_*
 # ---------------------------------------------------------
 
 . /start/stage3.functions
 
-if [ "$firstrun" == "true" ]
+if [ "$isFirstRun" == "true" ]
 then
    local IFS=$(echo -en "\n\b,")
    /bin/chown $VAR_LINUX_USER /init/initdb
@@ -32,15 +32,15 @@ then
       local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
       /bin/chown :$VAR_LINUX_USER /bin
       /bin/chmod g=rx /bin
-      runCommandAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+      runCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
       tryDelete "$pwFile"
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
-      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
+      runCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
       processInitdbDir
-      runCommandAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+      runCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       /bin/chmod go= /bin
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
