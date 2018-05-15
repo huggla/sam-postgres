@@ -29,8 +29,12 @@ then
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
       local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
-      runCmd "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
-      tryDelete "$pwFile"
+      /bin/chown :$VAR_LINUX_USER /bin
+      /bin/chmod g=rx /bin
+      runCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+     # runCmd "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+/bin/chmod g= /bin
+tryDelete "$pwFile"
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
