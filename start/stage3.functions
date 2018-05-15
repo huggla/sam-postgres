@@ -4,6 +4,13 @@
 # VAR_*
 # dataDir
 
+writeHbaFile(){
+   for row in $VAR_HBA
+   do
+      trim "$row" >> "$hbaFile"
+   done
+}
+
 initPostgres(){
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
    /bin/chown $VAR_LINUX_USER "$pwFile"
