@@ -69,3 +69,12 @@ processInitdbDir(){
    done
    set -f
 }
+
+printPasswordWarning(){
+   echo '*******************************************************************************'
+   echo "* Container was started with environment variable VAR_password_$VAR_LINUX_USER set.  *"
+   echo '* This variable is only needed when a new database is initialized. To improve *'
+   echo '* security, restart the container without it.                                 *'
+   echo '*******************************************************************************'
+   echo
+}
