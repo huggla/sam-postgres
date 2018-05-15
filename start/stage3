@@ -27,7 +27,7 @@ then
    then
       initPostgres
    fi
-   tryDelete "/initdb"
+   tryDelete /initdb
 fi
 eval "local pw=\$VAR_password_$VAR_LINUX_USER"
 if [ -n "$pw" ]
