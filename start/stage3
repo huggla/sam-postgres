@@ -12,7 +12,6 @@
 if [ "$isFirstRun" == "true" ]
 then
    local IFS=$(echo -en "\n\b,")
-   /bin/chown $VAR_LINUX_USER /init/initdb
    if [ ! -s "$VAR_CONFIG_FILE" ]
    then
       configFromVarGroup param > "$VAR_CONFIG_FILE"
@@ -35,18 +34,15 @@ then
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
-      /bin/chown :$VAR_LINUX_USER /bin
-      /bin/chmod g=rx /bin
-      runCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
+      runCmd "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
       processInitdbDir
-      runCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
-      /bin/chmod go= /bin
+      runCmd "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       echo
       echo 'PostgreSQL init process complete; ready for start up.'
       echo
    fi
-   /bin/rm -rf "/init/initdb"
+   /bin/rm -rf "/initdb"
 fi
 if [ -n "$VAR_password_postgres" ]
 then
