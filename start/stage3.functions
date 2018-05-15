@@ -1,7 +1,8 @@
-# Set in stage2:
+# Set in stage2/3:
 # -------------------------------------------
 # set -e +a +m +s +i -f
 # VAR_*
+# dataDir
 
 initPostgres(){
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
