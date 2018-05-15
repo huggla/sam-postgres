@@ -19,33 +19,15 @@ then
    local hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
    if [ ! -s "$hbaFile" ]
    then
-      for row in $VAR_HBA
-      do
-         trim "$row" >> "$hbaFile"
-      done
+      writeHbaFile
    fi
    local IFS=$IFS_bak
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
-      local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
-      /bin/chown $VAR_LINUX_USER /bin "$pwFile"
-      runCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
-     # runCmd "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
-/bin/chown root /bin $pwFile"
-tryDelete "$pwFile"
-      tryDelete "$dataDir/postgresql.conf"
-      tryDelete "$dataDir/pg_hba.conf"
-      tryDelete "$dataDir/pg_ident.conf"
-      runCmd "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
-      echo
-      processInitdbDir
-      runCmd "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
-      echo
-      echo 'PostgreSQL init process complete; ready for start up.'
-      echo
+      initPostgres
    fi
-   /bin/rm -rf "/initdb"
+   tryDelete "/initdb"
 fi
 if [ -n "$VAR_password_postgres" ]
 then
