@@ -29,12 +29,8 @@ then
    fi
    tryDelete "/initdb"
 fi
-if [ -n "$VAR_password_postgres" ]
+eval "local pw=\$VAR_password_$VAR_LINUX_USER"
+if [ -n "$pw" ]
 then
-   echo '*******************************************************************************'
-   echo '* Container was started with environment variable REV_password_postgres set.  *'
-   echo '* This variable is only needed when a new database is initialized. To improve *'
-   echo '* security, restart the container without it.                                 *'
-   echo '*******************************************************************************'
-   echo
+   printPasswordWarning
 fi
