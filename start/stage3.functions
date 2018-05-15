@@ -41,14 +41,16 @@ initPostgres(){
 
 processInitdbDir(){
    local psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
+   local filename=""
+   local dbname=""
    local -
    set +f
    set -- "/initdb/"*
    while [ -f "$1" ]
    do
-      local filename="$(/usr/bin/basename "$1")"
-      local dbname=${filename%.*}
-      local dbname=${dbname#*.}
+      filename="$(/usr/bin/basename "$1")"
+      dbname=${filename%.*}
+      dbname=${dbname#*.}
       case "$1" in
          *.sh)     echo "Running $1"
                    . "$1"
