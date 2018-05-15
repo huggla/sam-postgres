@@ -1,6 +1,7 @@
 # Set in stage2/3:
 # -------------------------------------------
 # set -e +a +m +s +i -f
+# . /start/stage2.functions
 # VAR_*
 # dataDir
 
