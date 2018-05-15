@@ -21,7 +21,7 @@ then
    then
       writeHbaFile
    fi
-   local IFS=$IFS_bak
+   IFS=$IFS_bak
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ ! -s "$dataDir/PG_VERSION" ]
    then
