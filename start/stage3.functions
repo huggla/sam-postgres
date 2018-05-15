@@ -3,6 +3,32 @@
 # set -e +a +m +s +i -f
 # VAR_*
 
+runPgCmdAsLinuxUser(){
+   /bin/chown $VAR_LINUX_USER /bin
+   exitCode=$(runCmdAsLinuxUser "$1")
+   /bin/chown root /bin
+   return $exitCode
+}
+
+initPostgres(){
+   local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
+   /bin/chown $VAR_LINUX_USER /bin "$pwFile"
+   runCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+   runCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
+
+echo
+/bin/chown root /bin $pwFile"
+tryDelete "$pwFile"
+      tryDelete "$dataDir/postgresql.conf"
+      tryDelete "$dataDir/pg_hba.conf"
+      tryDelete "$dataDir/pg_ident.conf"
+
+      processInitdbDir
+      runCmd "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+      echo
+      echo 'PostgreSQL init process complete; ready for start up.'
+      echo
+
 processInitdbDir(){
    local psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
    set +f
