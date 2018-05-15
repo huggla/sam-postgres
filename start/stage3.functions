@@ -6,7 +6,7 @@
 processInitdbDir(){
    local psql_cmd="/usr/local/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
    set +f
-   set -- "/init/initdb/"*
+   set -- "/initdb/"*
    while [ -f "$1" ]
    do
       local filename="$(/usr/bin/basename "$1")"
@@ -17,18 +17,18 @@ processInitdbDir(){
                    . "$1"
                    ;;
          *.sql)    echo "Running $1"
-                   runCmdAsLinuxUser "$psql_cmd --dbname=$dbname --file=\"$1\""
+                   runCmd "$psql_cmd --dbname=$dbname --file=\"$1\""
                    echo
                    ;;
          *.sql.gz) echo "Running $1"
-                   runCmdAsLinuxUser "/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
+                   runCmd "/bin/gunzip -c \"$1\" | $psql_cmd --dbname=$dbname"
                    echo
                    ;;
          *)        echo "Ignoring $1"
                    ;;
       esac
       /bin/rm -f "$1"
-      set -- "/init/initdb/"*
+      set -- "/initdb/"*
    done
    set -f
 }
