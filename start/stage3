@@ -30,7 +30,8 @@ then
    tryDelete /initdb
 fi
 eval "local pw=\$VAR_password_$VAR_LINUX_USER"
-if [ -n "$pw" ]
+eval "local pwFile=\$VAR_password_file_$VAR_LINUX_USER"
+if [ -n "$pw" ] || [ -s "$pwFile" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
 then
    printPasswordWarning
 fi
