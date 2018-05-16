@@ -37,13 +37,14 @@ initPostgres(){
       echo
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo "! A new PostgreSQL data storage has been initialized with $VAR_LINUX_USER as owner.  !"
-      echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !" 
-      read pw < "$pwFile"
-      if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ]
+      echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
+      local NlPwFile="$(returnFileWithNlEnding "$pwFile")"
+      read pw < "$NlPwFile"
+      if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$pwFile" ]
       then
-         tryDelete "$pwFile"
+         tryDelete "$NlPwFile"
       fi
-      echo "! $pw                                                                         !"
+      echo "! $pw                                 !"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo
    fi
