@@ -34,6 +34,7 @@ initPostgres(){
       echo
       processInitdbDir
       runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+      echo
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo "! A new PostgreSQL data storage has been initialized with $VAR_LINUX_USER as owner.  !"
       echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !" 
@@ -41,6 +42,7 @@ initPostgres(){
       tryDelete "$pwFile"
       echo "! $pw                                                                         !"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      echo
    fi
 }
 
