@@ -11,27 +11,14 @@
 
 if [ "$isFirstRun" == "true" ]
 then
-   local IFS=$(echo -en "\n\b,")
-   if [ ! -s "$VAR_CONFIG_FILE" ]
+   initPgConfig
+   if [ ! -s "$(removeSingleQuotes "$VAR_param_data_directory")/PG_VERSION" ]
    then
-      configFromVarGroup param > "$VAR_CONFIG_FILE"
-   fi
-   local hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
-   if [ ! -s "$hbaFile" ]
-   then
-      writeHbaFile
-   fi
-   IFS=$IFS_bak
-   local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
-   if [ ! -s "$dataDir/PG_VERSION" ]
-   then
-      initPostgres
+      initPgData
    fi
    tryDelete /initdb
 fi
-eval "local pw=\$VAR_password_$VAR_LINUX_USER"
-eval "local pwFile=\$VAR_password_file_$VAR_LINUX_USER"
-if [ -n "$pw" ] || [ -s "$pwFile" ] || [ "$VAR_SALT_FILE" != "/proc/sys/kernel/hostname" ]
+if [ "$(isInsecure)" == "true" ]
 then
-   printPasswordWarning
+   printSecurityWarning
 fi
