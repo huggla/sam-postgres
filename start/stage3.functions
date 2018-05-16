@@ -1,4 +1,4 @@
-# Set in stage2/3:
+# Set in stage2 or stage3:
 # -------------------------------------------
 # set -e +a +m +s +i -f
 # . /start/stage2.functions
