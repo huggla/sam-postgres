@@ -21,6 +21,7 @@ RUN chmod go= /initdb \
  && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
  && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
  && wget -O "$buildDir/config/config.sub" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.sub?id=7d3d27baf8107b630586c962c057e22149653deb' \
+ && mkdir -p /usr/local/include \
  && cd "$buildDir" \
  && ./configure --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" --enable-integer-datetimes --enable-thread-safety --enable-tap-tests --disable-rpath --with-uuid=e2fs --with-gnu-ld --with-pgport=5432 --prefix=/usr/local --with-includes=/usr/local/include --with-libraries=/usr/local/lib --with-openssl --with-libxml --with-libxslt --with-ldap \
  && make -j "$(nproc)" world \
