@@ -58,7 +58,7 @@ initPgData(){
       then
          tryDelete "$NlPwFile"
       fi
-      echo "! $pw                                              !"
+      echo "! $pw                         !"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo
    fi
