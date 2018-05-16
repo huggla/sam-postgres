@@ -34,13 +34,13 @@ initPostgres(){
       echo
       processInitdbDir
       runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
-      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      echo "! A new PostgreSQL data storage has been initialized with $VAR_LINUX_USER as owner. !"
-      echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.              !" 
+      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      echo "! A new PostgreSQL data storage has been initialized with $VAR_LINUX_USER as owner.  !"
+      echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !" 
       read pw < "$pwFile"
       tryDelete "$pwFile"
-      echo "! $pw                                                                        !"
-      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      echo "! $pw                                                                         !"
+      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
    fi
 }
 
@@ -78,10 +78,11 @@ processInitdbDir(){
 }
 
 printPasswordWarning(){
-   echo '*******************************************************************************'
-   echo "* Container was started with environment variable VAR_password_$VAR_LINUX_USER set.  *"
-   echo '* This variable is only needed when a new database is initialized. To improve *'
-   echo '* security, restart the container without it.                                 *'
-   echo '*******************************************************************************'
+   echo "*******************************************************************************"
+   echo "* Container was started with either environment variable VAR_password_$VAR_LINUX_USER *"
+   echo "* set, or with mounted password and/or encryption salt file. These are only   *"
+   echo "* needed during initialization of a new PostgreSQL data storage. To improve   *"
+   echo "* security, restart the container without them.                               *"
+   echo "*******************************************************************************"
    echo
 }
