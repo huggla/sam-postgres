@@ -106,7 +106,7 @@ processInitdbDir(){
    set -f
 }
 
-printPasswordWarning(){
+printSecurityWarning(){
    echo "*******************************************************************************"
    echo "* Container was started with either environment variable VAR_password_$VAR_LINUX_USER *"
    echo "* set, or with mounted password and/or encryption salt file. These are only   *"
