@@ -4,7 +4,6 @@
 # . /start/stage2.functions
 # isFirstRun
 # VAR_*
-# ---------------------------------------------------------
 
 . /start/stage3.functions
 
