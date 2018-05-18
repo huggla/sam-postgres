@@ -3,7 +3,6 @@
 # set -e +a +m +s +i -f
 # . /start/stage2.functions
 # isFirstRun
-# IFS_bak
 # VAR_*
 # ---------------------------------------------------------
 
