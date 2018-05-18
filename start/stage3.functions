@@ -3,7 +3,6 @@
 # set -e +a +m +s +i -f
 # . /start/stage2.functions
 # VAR_*
-# dataDir
 
 writeHbaFile(){
    for row in $VAR_HBA
