@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# Set in parent script:
+# Set in parent scripts:
 # ---------------------------------------------------------
 # set -e +a +m +s +i +f
-# . /start/stage2.functions
+# VAR_*
 # ---------------------------------------------------------
 
 createPgagentExtension(){
