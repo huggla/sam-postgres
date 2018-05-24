@@ -48,18 +48,7 @@ initPgData(){
       processInitdbDir
       runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       echo
-      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      echo "! A new PostgreSQL data storage has been initialized with $VAR_LINUX_USER as owner.  !"
-      echo "! NOTE PASSWORD BELOW. Write it down and store in a safe place.               !"
-      local NlPwFile="$(returnFileWithNlEnding "$pwFile")"
-      read pw < "$NlPwFile"
-      if [ -z "$(eval "echo \$VAR_password_file_$VAR_LINUX_USER")" ] || [ "$NlPwFile" != "$pwFile" ]
-      then
-         tryDelete "$NlPwFile"
-      fi
-      echo "! $pw"
-      echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      echo
+      printInitPwFromFile "$pwFile"
    fi
 }
 
