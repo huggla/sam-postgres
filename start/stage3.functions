@@ -104,13 +104,3 @@ processInitdbDir(){
    done
    set -f
 }
-
-printSecurityWarning(){
-   echo "*******************************************************************************"
-   echo "* Container was started with either environment variable VAR_password_$VAR_LINUX_USER *"
-   echo "* set, or with mounted password and/or encryption salt file. These are only   *"
-   echo "* needed during initialization of a new PostgreSQL data storage. To improve   *"
-   echo "* security, restart the container without them.                               *"
-   echo "*******************************************************************************"
-   echo
-}
