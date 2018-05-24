@@ -27,7 +27,6 @@ initPgConfig(){
 initPgData(){
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
-   local pw=""
    /bin/chown $VAR_LINUX_USER "$pwFile"
    local -
    set +e
