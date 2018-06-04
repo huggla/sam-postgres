@@ -1,0 +1,12 @@
+initPgConfig(){
+   local IFS=$(echo -en "\n\b,")
+   if [ ! -s "$VAR_CONFIG_FILE" ]
+   then
+      configFromVarGroup param > "$VAR_CONFIG_FILE"
+   fi
+   local hbaFile="$(removeSingleQuotes "$VAR_param_hba_file")"
+   if [ ! -s "$hbaFile" ]
+   then
+      writeHbaFile
+   fi
+}
