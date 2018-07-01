@@ -1,4 +1,4 @@
-FROM huggla/alpine
+FROM huggla/alpine as tmp
 
 USER root
 
@@ -34,6 +34,12 @@ RUN chmod go= /initdb \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample
+
+FROM huggla/alpine
+
+USER root
+
+COPY --from=tmp /usr/local /usr/local
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
