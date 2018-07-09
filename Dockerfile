@@ -7,9 +7,9 @@ ENV CONFIG_DIR="/etc/postgres" \
     PG_MAJOR="10" \
     PG_VERSION="10.4"
 
-COPY ./start /start
-COPY ./extension/* /usr/local/share/postgresql/extension/
-COPY ./initdb /initdb 
+COPY ./start /rootfs/start
+COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
+COPY ./initdb /rootfs/initdb 
 
 RUN chmod go= /initdb \
  && downloadDir="$(mktemp -d)" \
@@ -33,13 +33,16 @@ RUN chmod go= /initdb \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
- && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample
+ && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
+ && mv /usr/local /rootfs/usr/local
 
 FROM huggla/alpine
 
 USER root
 
-COPY --from=tmp /usr/local /usr/local
+COPY --from=tmp /rootfs /
+
+RUN chmod go= /initdb
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
