@@ -8,7 +8,6 @@ ENV CONFIG_DIR="/etc/postgres" \
     PG_VERSION="10.4"
 
 COPY ./start /rootfs/start
-COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
 COPY ./initdb /rootfs/initdb 
 
 RUN downloadDir="$(mktemp -d)" \
@@ -34,6 +33,8 @@ RUN downloadDir="$(mktemp -d)" \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
  && mv /usr/local/* /rootfs/usr/local/
+
+COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
 
 FROM huggla/alpine
 
