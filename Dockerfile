@@ -10,7 +10,8 @@ ENV CONFIG_DIR="/etc/postgres" \
 COPY ./start /rootfs/start
 COPY ./initdb /rootfs/initdb 
 
-RUN downloadDir="$(mktemp -d)" \
+RUN apk info > /before \
+ && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
@@ -32,7 +33,10 @@ RUN downloadDir="$(mktemp -d)" \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && tar -cpf /installed_files.tar $(apk manifest $runDeps | awk -F "  " '{print $2;}') \
+ && apk info > /after \
+ && diff /before /after > /diff \
+ && IFS=$(echo -en " ") \
+ && tar -cpf /installed_files.tar $(apk manifest $(cat /diff) | awk -F "  " '{print $2;}') \
  && tar -xpf /installed_files.tar -C /rootfs/ \
  && mkdir -p /rootfs/usr \
  && mv /usr/local /rootfs/usr/local
