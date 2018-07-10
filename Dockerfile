@@ -32,7 +32,9 @@ RUN downloadDir="$(mktemp -d)" \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && mkdir /rootfs/usr \
+ && tar -cpf /installed_files.tar $(apk manifest $runDeps | awk -F "  " '{print $2;}') \
+ && tar -xpf /installed_files.tar -C /rootfs/ \
+ && mkdir -p /rootfs/usr \
  && mv /usr/local /rootfs/usr/local
 
 COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
