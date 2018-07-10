@@ -32,7 +32,8 @@ RUN downloadDir="$(mktemp -d)" \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && mv /usr/local/* /rootfs/usr/local/
+ && mkdir /rootfs/usr \
+ && mv /usr/local /rootfs/usr/local
 
 COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
 
