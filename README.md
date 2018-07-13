@@ -1,7 +1,7 @@
 **Note! I use Docker latest tag for development, which means that it isn't allways working. Date tags are stable.**
 
 # postgres-alpine
-A small and secure Docker image of Postgresql 10.4.
+A small and secure Docker image of Postgresql (currently 10.4). Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
@@ -32,4 +32,4 @@ A small and secure Docker image of Postgresql 10.4.
 Can drop all but CHOWN, DAC_OVERRIDE, FOWNER, SETGID and SETUID.
 
 ## Tips
-Works with huggla/pgagent-alpine, huggla/pgadmin-alpine and huggla/pgbouncer-alpine.
+Works with huggla/pgagent-alpine, huggla/pgadmin-alpine, huggla/pgbouncer-alpine and huggla/postgres-backup.
