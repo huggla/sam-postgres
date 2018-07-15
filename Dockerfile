@@ -7,9 +7,6 @@ ENV CONFIG_DIR="/etc/postgres" \
     PG_MAJOR="10" \
     PG_VERSION="10.4"
 
-COPY ./start /rootfs/start
-COPY ./initdb /rootfs/initdb 
-
 RUN apk info > /before \
  && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
@@ -37,10 +34,11 @@ RUN apk info > /before \
  && tar -cpf /installed_files.tar $(apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}') \
  && tar -xpf /installed_files.tar -C /rootfs/ \
  && mkdir -p /rootfs/usr \
- && mv /usr/local /rootfs/usr/local \
- && chmod go= /initdb
+ && mv /usr/local /rootfs/usr/local
 
-COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
+COPY ./rootfs /rootfs
+
+RUN chmod go= /rootfs/initdb
 
 FROM huggla/alpine
 
