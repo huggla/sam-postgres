@@ -1,4 +1,4 @@
-FROM huggla/alpine as tmp
+FROM huggla/alpine as stage1
 
 USER root
 
@@ -37,17 +37,14 @@ RUN apk info > /before \
  && tar -cpf /installed_files.tar $(apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}') \
  && tar -xpf /installed_files.tar -C /rootfs/ \
  && mkdir -p /rootfs/usr \
- && mv /usr/local /rootfs/usr/local
+ && mv /usr/local /rootfs/usr/local \
+ && chmod go= /initdb
 
 COPY ./extension/* /rootfs/usr/local/share/postgresql/extension/
 
 FROM huggla/alpine
 
-USER root
-
-COPY --from=tmp /rootfs /
-
-RUN chmod go= /initdb
+COPY --from=stage1 /rootfs /
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
@@ -63,5 +60,3 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_listen_addresses="'*'" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
-
-USER starter
