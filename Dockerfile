@@ -1,11 +1,8 @@
 FROM huggla/alpine as stage1
 
-USER root
-
-# Build-only variables
-ENV CONFIG_DIR="/etc/postgres" \
-    PG_MAJOR="10" \
-    PG_VERSION="10.4"
+ARG CONFIG_DIR="/etc/postgres"
+ARG PG_MAJOR="10"
+ARG PG_VERSION="10.4"
 
 RUN apk info > /before \
  && downloadDir="$(mktemp -d)" \
@@ -59,3 +56,5 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_listen_addresses="'*'" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
+
+USER starter
