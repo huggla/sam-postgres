@@ -29,7 +29,8 @@ RUN apk info > /before \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
  && apk info > /after \
  && mkdir /rootfs \
- && tar -cvp -f /installed_files.tar $(apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}') \
+ && apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /tarfiles \
+ && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && mkdir -p /rootfs/usr \
  && mv /usr/local /rootfs/usr/local
