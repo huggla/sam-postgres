@@ -57,4 +57,6 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
 
+STOPSIGNAL SIGINT
+
 USER starter
