@@ -28,11 +28,10 @@ RUN apk info > /before \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
  && apk info > /after \
- && mkdir /rootfs \
+ && mkdir -p /rootfs/usr \
  && apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /tarfiles \
  && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
- && mkdir -p /rootfs/usr \
  && mv /usr/local /rootfs/usr/local
 
 COPY ./rootfs /rootfs
