@@ -1,7 +1,8 @@
 FROM huggla/alpine as stage1
 
-ARG PG_MAJOR="10"
 ARG PG_VERSION="10.4"
+
+COPY ./rootfs /rootfs
 
 RUN apk info > /before \
  && downloadDir="$(mktemp -d)" \
@@ -31,11 +32,8 @@ RUN apk info > /before \
  && apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /tarfiles \
  && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
- && mv /usr/local /rootfs/usr/local
-
-COPY ./rootfs /rootfs
-
-RUN chmod go= /rootfs/initdb
+ && mv /usr/local /rootfs/usr/local \
+ && chmod go= /rootfs/initdb
 
 FROM huggla/alpine
 
