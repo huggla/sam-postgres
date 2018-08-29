@@ -1,6 +1,5 @@
 FROM huggla/alpine as stage1
 
-ARG CONFIG_DIR="/etc/postgres"
 ARG PG_MAJOR="10"
 ARG PG_VERSION="10.4"
 
@@ -39,6 +38,8 @@ COPY ./rootfs /rootfs
 RUN chmod go= /rootfs/initdb
 
 FROM huggla/alpine
+
+ARG CONFIG_DIR="/etc/postgres"
 
 COPY --from=stage1 /rootfs /
 
