@@ -1,4 +1,4 @@
-FROM huggla/alpine as stage1
+FROM huggla/alpine:20180829-edge as stage1
 
 ARG PG_VERSION="10.4"
 
@@ -35,7 +35,7 @@ RUN apk info > /before \
  && mv /usr/local /rootfs/usr/local \
  && chmod go= /rootfs/initdb
 
-FROM huggla/alpine
+FROM huggla/alpine:20180829-edge
 
 ARG CONFIG_DIR="/etc/postgres"
 
