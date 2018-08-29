@@ -1,6 +1,5 @@
 FROM huggla/alpine as stage1
 
-ARG PG_MAJOR="10"
 ARG PG_VERSION="10.4"
 
 RUN apk info > /before \
