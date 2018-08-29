@@ -2,6 +2,8 @@ FROM huggla/alpine as stage1
 
 ARG PG_VERSION="10.4"
 
+COPY ./rootfs /rootfs
+
 RUN apk info > /before \
  && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
@@ -31,8 +33,6 @@ RUN apk info > /before \
  && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && mv /usr/local /rootfs/usr/local
-
-COPY ./rootfs /rootfs
 
 RUN chmod go= /rootfs/initdb
 
