@@ -1,3 +1,0 @@
-stopContainer(){
-   killall -s SIGINT postgres
-}
