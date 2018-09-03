@@ -37,8 +37,7 @@ RUN apk info > /before \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
  && ls -la /usr/local \
  && ls -la /rootfs/usr/local \
- && mv /usr/local /rootfs/usr/local \
- && exit 1
+ && mv /usr/local /rootfs/usr/
 
 COPY ./rootfs /rootfs
 
