@@ -35,8 +35,8 @@ RUN apk info > /before \
  && echo banan2 \
  && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
- && ls -la /usr/local \
- && ls -la /rootfs/usr/local \
+# && ls -la /usr/local \
+# && ls -la /rootfs/usr/local \
  && mv /usr/local /rootfs/usr/
 
 COPY ./rootfs /rootfs
