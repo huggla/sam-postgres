@@ -28,15 +28,8 @@ RUN apk info > /before \
  && apk info > /after \
  && mkdir -p /rootfs/usr \
  && apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /tarfiles \
- && echo banan \
- && echo \
- && cat /tarfiles \
- && echo \
- && echo banan2 \
  && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
  && tar -xvp -f /installed_files.tar -C /rootfs/ \
-# && ls -la /usr/local \
-# && ls -la /rootfs/usr/local \
  && mv /usr/local /rootfs/usr/
 
 COPY ./rootfs /rootfs
