@@ -2,8 +2,9 @@ FROM huggla/alpine as stage1
 
 ARG PG_VERSION="10.4"
 
-RUN apk info > /before \
- && downloadDir="$(mktemp -d)" \
+COPY ./rootfs /rootfs
+
+RUN downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
@@ -19,20 +20,21 @@ RUN apk info > /before \
  && make install-world \
  && make -C contrib install \
  && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
- && apk add --no-cache --virtual .postgresql-rundeps $runDeps \
+# && apk add --no-cache --virtual .postgresql-rundeps $runDeps \
  && apk del .build-deps \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && apk info > /after \
- && mkdir -p /rootfs/usr \
- && apk manifest $(diff /before /after | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /tarfiles \
- && tar -cvp -f /installed_files.tar -T /tarfiles -C / \
- && tar -xvp -f /installed_files.tar -C /rootfs/ \
+ && find bin usr lib etc var home sbin root run srv -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
+ && cp -a /lib/apk/db /rootfs/lib/apk/ \
+ && cp -a /etc/apk /rootfs/etc/ \
+ && cd / \
+ && cp -a /bin /sbin /rootfs/ \
+ && cp -a /usr/bin /usr/sbin /rootfs/usr/ \
+ && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
+ && apk --no-cache --quiet --root /rootfs add $runDeps \
  && mv /usr/local /rootfs/usr/
-
-COPY ./rootfs /rootfs
 
 RUN chmod go= /rootfs/initdb
 
