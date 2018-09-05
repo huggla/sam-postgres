@@ -34,7 +34,7 @@ RUN downloadDir="$(mktemp -d)" \
  && cp -a /usr/bin /usr/sbin /rootfs/usr/ \
  && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
  && apk --no-cache --quiet --root /rootfs add $runDeps \
- && mv /usr/local /rootfs/usr/
+ && cp -a /usr/local /rootfs/usr/
 
 RUN chmod go= /rootfs/initdb
 
