@@ -5,7 +5,7 @@ USER root
 # Build-only variables
 ENV CONFIG_DIR="/etc/postgres" \
     PG_MAJOR="10" \
-    PG_VERSION="10.4"
+    PG_VERSION="10.5"
 
 COPY ./start /start
 COPY ./extension/* /usr/local/share/postgresql/extension/
