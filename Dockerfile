@@ -17,7 +17,7 @@ RUN chmod go= /initdb \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
  && rm -rf "$downloadDir" \
- && apk add --no-cache --virtual .build-deps freetds python3-dev bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev \
+ && apk add --no-cache --virtual .build-deps git freetds g++ python3-dev bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev \
  && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
  && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
  && wget -O "$buildDir/config/config.sub" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.sub?id=7d3d27baf8107b630586c962c057e22149653deb' \
@@ -27,8 +27,13 @@ RUN chmod go= /initdb \
  && make -j "$(nproc)" world \
  && make install-world \
  && make -C contrib install \
+ && rm -rf * \
+ && git clone https://github.com/tds-fdw/tds_fdw.git \
+ && cd tds_fdw \
  && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
  && apk add --no-cache --virtual .postgresql-rundeps $runDeps \
+ && make USE_PGXS=1 \
+ && make USE_PGXS=1 install \
  && apk del .build-deps \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
