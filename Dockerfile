@@ -1,4 +1,4 @@
-FROM huggla/alpine as stage1
+FROM huggla/alpine-slim:20180907-edge as stage1
 
 ARG PG_VERSION="10.4"
 
@@ -38,7 +38,7 @@ RUN downloadDir="$(mktemp -d)" \
 
 RUN chmod go= /rootfs/initdb
 
-FROM huggla/alpine
+FROM huggla/base:20180907-edge
 
 ARG CONFIG_DIR="/etc/postgres"
 
