@@ -9,7 +9,7 @@ RUN downloadDir="$(mktemp -d)" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
  && rm -rf "$downloadDir" \
- && apk --no-cache add busybox apk-tools libressl2.7-libssl libressl2.7-libcrypto \
+ && apk --no-cache add busybox apk-tools \
  && apk add --no-cache --virtual .build-deps bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev scanelf \
  && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
  && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
@@ -27,7 +27,7 @@ RUN downloadDir="$(mktemp -d)" \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
  && apk --no-cache --quiet info > /pre-apks.list \
- && apk --no-cache add --virtual .postgresql-rundeps $runDeps \
+ && apk --no-cache add --virtual .postgresql-rundeps $runDeps libressl2.7-libssl \
  && apk --no-cache --quiet info > /post-apks.list \
  && apk --no-cache --quiet manifest $(diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
  && tar -cvp -f /apks-files.tar -T /apks-files.list -C / \
