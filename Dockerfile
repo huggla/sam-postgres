@@ -31,7 +31,7 @@ RUN chmod go= /initdb \
  && git clone https://github.com/tds-fdw/tds_fdw.git \
  && cd tds_fdw \
  && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
- && apk add --no-cache --virtual .postgresql-rundeps $runDeps \
+ && apk add --no-cache --virtual .postgresql-rundeps $runDeps freetds \
  && make USE_PGXS=1 \
  && make USE_PGXS=1 install \
  && apk del .build-deps \
