@@ -20,23 +20,20 @@ RUN downloadDir="$(mktemp -d)" \
  && make install-world \
  && make -C contrib install \
  && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
-# && apk add --no-cache --virtual .postgresql-rundeps $runDeps \
- && apk del .build-deps \
+ && apk --no-cache del .build-deps \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && find bin usr lib etc var home sbin root run srv -type d -print0 | sed -e 's|^|/rootfs/|' | xargs -0 mkdir -p \
- && cp -a /lib/apk/db /rootfs/lib/apk/ \
- && cp -a /etc/apk /rootfs/etc/ \
- && cd / \
- && cp -a /bin /sbin /rootfs/ \
- && cp -a /usr/bin /usr/sbin /rootfs/usr/ \
- && apk --no-cache --quiet info | xargs apk --quiet --no-cache --root /rootfs fix \
- && apk --no-cache --quiet --root /rootfs add $runDeps \
- && cp -a /usr/local /rootfs/usr/
-
-RUN chmod go= /rootfs/initdb
+ && apk --no-cache --quiet info > /pre-apks.list \
+ && apk --no-cache add --virtual .postgresql-rundeps $runDeps \
+ && apk --no-cache --quiet info > /post-apks.list \
+ && apk --no-cache --quiet manifest $(diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
+ && tar -cvp -f /apks-files.tar -T /apks-files.list -C / \
+ && mkdir -p /rootfs/usr /rootfs/initdb \
+ && tar -xvp -f /apks-files.tar -C /rootfs/ \
+ && cp -a /usr/local /rootfs/usr/ \
+ && chmod go= /rootfs/initdb
 
 FROM huggla/base:20180907-edge
 
@@ -57,7 +54,7 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_unix_socket_directories="'/var/run/postgresql'" \
     VAR_param_listen_addresses="'*'" \
     VAR_param_timezone="'UTC'" \
-    VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
+    VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\""
 
 STOPSIGNAL SIGINT
 
