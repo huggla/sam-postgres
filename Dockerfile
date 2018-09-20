@@ -1,10 +1,17 @@
 FROM huggla/alpine-slim:20180907-edge as stage1
 
+ARG APKS="libressl2.7-libssl openldap"
 ARG PG_VERSION="10.4"
 
 COPY ./rootfs /rootfs
 
-RUN downloadDir="$(mktemp -d)" \
+RUN  apk --no-cache add $APKS \
+ && apk --no-cache --quiet info > /apks.list \
+ && apk --no-cache --quiet manifest $(cat /apks.list) | awk -F "  " '{print $2;}' > /apks_files.list \
+ && tar -cvp -f /apks_files.tar -T /apks_files.list -C / \
+ && tar -xvp -f /apks_files.tar -C /rootfs/ \
+ && rm -f /apks.list /apks_files.list /apks_files.tar \
+ && downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
@@ -28,8 +35,6 @@ RUN downloadDir="$(mktemp -d)" \
  && apk --no-cache add --virtual .postgresql-rundeps $runDeps \
  && apk --no-cache --quiet info > /post-apks.list \
  && diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' > /apks.list \
- && echo "libressl2.7-libcrypto" >> /apks.list \
- && echo "libressl2.7-libssl" >> /apks.list \
  && apk --no-cache --quiet manifest $(cat /apks.list | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
  && tar -cvp -f /apks-files.tar -T /apks-files.list -C / \
  && mkdir -p /rootfs/usr /rootfs/initdb \
