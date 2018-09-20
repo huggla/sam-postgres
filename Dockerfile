@@ -25,9 +25,12 @@ RUN downloadDir="$(mktemp -d)" \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
  && apk --no-cache --quiet info > /pre-apks.list \
- && apk --no-cache add --virtual .postgresql-rundeps $runDeps libressl2.7-libssl \
+ && apk --no-cache add --virtual .postgresql-rundeps $runDeps \
  && apk --no-cache --quiet info > /post-apks.list \
- && apk --no-cache --quiet manifest $(diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
+ && diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' > /apks.list \
+ && echo "libressl2.7-libcrypto" >> /apks.list \
+ && echo "libressl2.7-libssl" >> /apks.list \
+ && apk --no-cache --quiet manifest $(cat /apks.list | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
  && tar -cvp -f /apks-files.tar -T /apks-files.list -C / \
  && mkdir -p /rootfs/usr /rootfs/initdb \
  && tar -xvp -f /apks-files.tar -C /rootfs/ \
