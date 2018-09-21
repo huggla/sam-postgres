@@ -16,7 +16,7 @@ RUN  apk --no-cache add $APKS \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
  && rm -rf "$downloadDir" \
- && apk add --no-cache --virtual .build-deps bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev scanelf \
+ && apk add --no-cache --virtual .build-deps bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev \
  && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
  && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
  && wget -O "$buildDir/config/config.sub" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.sub?id=7d3d27baf8107b630586c962c057e22149653deb' \
@@ -26,19 +26,11 @@ RUN  apk --no-cache add $APKS \
  && make -j "$(nproc)" world \
  && make install-world \
  && make -C contrib install \
- && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
  && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && apk --no-cache --quiet info > /pre-apks.list \
- && apk --no-cache add --virtual .postgresql-rundeps $runDeps \
- && apk --no-cache --quiet info > /post-apks.list \
- && diff /pre-apks.list /post-apks.list | grep "^+[^+]" | awk -F + '{print $2}' > /apks.list \
- && apk --no-cache --quiet manifest $(cat /apks.list | tr '\n' ' ') | awk -F "  " '{print $2;}' > /apks-files.list \
- && tar -cvp -f /apks-files.tar -T /apks-files.list -C / \
  && mkdir -p /rootfs/usr /rootfs/initdb \
- && tar -xvp -f /apks-files.tar -C /rootfs/ \
  && cp -a /usr/local /rootfs/usr/ \
  && chmod go= /rootfs/initdb \
  && apk --no-cache del .build-deps
