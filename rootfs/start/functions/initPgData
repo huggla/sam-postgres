@@ -2,6 +2,7 @@ initPgData(){
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
    /bin/chown $VAR_LINUX_USER "$pwFile"
+   /bin/chgrp $VAR_LINUX_USER /etc/passwd
    local -
    set +e
    runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
