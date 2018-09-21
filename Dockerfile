@@ -1,4 +1,4 @@
-FROM huggla/alpine-slim:20180907-edge as stage1
+FROM huggla/alpine-slim:20180921-edge as stage1
 
 ARG APKS="libressl2.7-libssl openldap libxml2"
 ARG PG_VERSION="10.4"
@@ -43,7 +43,7 @@ RUN  apk --no-cache add $APKS \
  && chmod go= /rootfs/initdb \
  && apk --no-cache del .build-deps
 
-FROM huggla/base:20180907-edge
+FROM huggla/base:20180921-edge
 
 ARG CONFIG_DIR="/etc/postgres"
 
