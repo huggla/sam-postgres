@@ -41,7 +41,6 @@ RUN  apk --no-cache add $APKS \
  && tar -xvp -f /apks-files.tar -C /rootfs/ \
  && cp -a /usr/local /rootfs/usr/ \
  && chmod go= /rootfs/initdb \
- && ls -la /rootfs/usr/local/bin \
  && apk --no-cache del .build-deps
 
 FROM huggla/base:20180921-edge
