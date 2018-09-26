@@ -1,7 +1,7 @@
 FROM huggla/alpine-slim:20180921-edge as stage1
 
 ARG APKS="libressl2.7-libssl openldap libxml2 libedit"
-ARG PG_VERSION="10.4"
+ARG PG_VERSION="10.5"
 
 COPY ./rootfs /rootfs
 
