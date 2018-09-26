@@ -1,7 +1,7 @@
 **Note! I use Docker latest tag for development, which means that it isn't allways working. Date tags are stable.**
 
 # postgres-alpine
-A small and secure Docker image of Postgresql (currently 10.4). Will execute .sh and .sql files located in /initdb when a new datastore is created.
+A small and secure Docker image of Postgresql (currently 10.5). Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
