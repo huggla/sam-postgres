@@ -1,11 +1,13 @@
-FROM huggla/alpine-slim:20180921-edge as stage1
+FROM huggla/alpine:20180628-edge as stage2
+FROM huggla/alpine-slim:20180927-edge as stage1
 
 ARG APKS="libressl2.7-libssl openldap libxml2 libedit"
 ARG PG_VERSION="10.5"
 
+COPY --from=stage2 / /
 COPY ./rootfs /rootfs
 
-RUN  apk --no-cache add $APKS \
+RUN apk --no-cache add $APKS \
  && apk --no-cache --quiet info > /apks.list \
  && apk --no-cache --quiet manifest $(cat /apks.list) | awk -F "  " '{print $2;}' > /apks_files.list \
  && tar -cvp -f /apks_files.tar -T /apks_files.list -C / \
@@ -35,11 +37,11 @@ RUN  apk --no-cache add $APKS \
  && chmod go= /rootfs/initdb \
  && apk --no-cache del .build-deps
 
-FROM huggla/base:20180921-edge
+#FROM huggla/base:20180921-edge
 
 ARG CONFIG_DIR="/etc/postgres"
 
-COPY --from=stage1 /rootfs /
+#COPY --from=stage1 /rootfs /
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
