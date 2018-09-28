@@ -15,8 +15,7 @@ COPY ./rootfs/start /start
 COPY ./rootfs/usr/local/share/postgresql/extension/* /usr/local/share/postgresql/extension/
 COPY ./rootfs/initdb /rootfs/initdb
 
-RUN chmod go= /initdb \
- && downloadDir="$(mktemp -d)" \
+RUN downloadDir="$(mktemp -d)" \
  && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
  && buildDir="$(mktemp -d)" \
  && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
