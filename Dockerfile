@@ -38,7 +38,7 @@ RUN chmod go= /initdb \
  && apk add --no-cache --virtual .postgresql-rundeps $runDeps freetds \
  && make USE_PGXS=1 \
  && make USE_PGXS=1 install \
- && apk del .build-deps \
+# && apk del .build-deps \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
