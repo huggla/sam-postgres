@@ -13,7 +13,7 @@ COPY --from=stage2 / /
 COPY --from=stage3 / /
 COPY ./rootfs/start /start
 COPY ./rootfs/usr/local/share/postgresql/extension/* /usr/local/share/postgresql/extension/
-COPY ./rootfs/initdb /initdb 
+COPY ./rootfs/initdb /rootfs/initdb
 
 RUN chmod go= /initdb \
  && downloadDir="$(mktemp -d)" \
@@ -42,7 +42,12 @@ RUN chmod go= /initdb \
  && cd / \
  && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
  && find /usr/local -name '*.a' -delete \
- && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample
+ && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
+ && mkdir -p /rootfs/usr \
+ && cp -a /usr/local /rootfs/usr/ \
+ && chmod go= /rootfs/initdb
+ 
+FROM huggla/base
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
@@ -59,4 +64,4 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="/usr/local/bin/postgres --config_file=\"\$VAR_CONFIG_FILE\""
 
-USER starter
+ONBUILD USER root
