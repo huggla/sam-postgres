@@ -8,7 +8,7 @@
 if [ "$isFirstRun" == "true" ]
 then
    initPgConfig
-   echo $VAR_FREETDS_CONF > /etc/freetds.conf
+   echo -e "$VAR_FREETDS_CONF" > /etc/freetds.conf
    if [ ! -s "$(removeSingleQuotes "$VAR_param_data_directory")/PG_VERSION" ]
    then
       initPgData
