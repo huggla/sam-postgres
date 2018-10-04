@@ -1,3 +1,31 @@
+ARG PG_VERSION="10.5"
+ARG DOWNLOADS="http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2"
+ARG BUILDDEPS="git g++ python3-dev bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev"
+ARG RUNDEPS=""
+ARG RUNDEPS_UNTRUSTED=""
+ARG MAKEDIRS="/initdb"
+ARG REMOVEFILES=""
+ARG EXECUTABLES=""
+
+FROM huggla/mariadb:10.3.9 as mariadb
+FROM huggla/busybox as init
+
+COPY --from=mariadb /mariadb-apks /tmp/mariadb-apks
+
+FROM huggla/build as build
+
+FROM huggla/base as image
+
+ENV VAR_LINUX_USER="mysql" \
+    VAR_FINAL_COMMAND="/usr/local/bin/mysqld \$extraConfig" \
+    VAR_param_datadir="/mariadbdata" \
+    VAR_param_socket="/run/mysqld/mysqld.sock" \
+    VAR_param_character_set_server="utf8" \
+    VAR_param_collation_server="utf8_general_ci" \
+    VAR_param_port=3306
+
+ONBUILD USER root
+
 FROM huggla/alpine-slim:20180927-edge as stage3
 FROM huggla/alpine:20180628-edge as stage2
 FROM huggla/alpine-slim:20180927-edge as stage1
@@ -5,9 +33,9 @@ FROM huggla/alpine-slim:20180927-edge as stage1
 USER root
 
 # Build-only variables
-ENV CONFIG_DIR="/etc/postgres" \
-    PG_MAJOR="10" \
-PG_VERSION="10.5"
+ENV CONFIG_DIR="/etc/postgres"
+#    PG_MAJOR="10" \
+#PG_VERSION="10.5"
 
 COPY --from=stage2 / /
 COPY --from=stage3 / /
@@ -15,12 +43,8 @@ COPY ./rootfs/start /start
 COPY ./rootfs/usr/local/share/postgresql/extension/* /usr/local/share/postgresql/extension/
 COPY ./rootfs/initdb /rootfs/initdb
 
-RUN downloadDir="$(mktemp -d)" \
- && wget -O "$downloadDir/postgresql.tar.bz2" "http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
- && buildDir="$(mktemp -d)" \
- && tar --extract --file "$downloadDir/postgresql.tar.bz2" --directory "$buildDir" --strip-components 1 \
- && rm -rf "$downloadDir" \
- && apk add --no-cache --virtual .build-deps git freetds-dev g++ python3-dev bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev \
+RUN 
+
  && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
  && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
  && wget -O "$buildDir/config/config.sub" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.sub?id=7d3d27baf8107b630586c962c057e22149653deb' \
