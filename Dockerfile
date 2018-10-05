@@ -4,11 +4,10 @@ ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
 "&& mv bin bin2 "\
 "&& ln -s ../../usr/* ./ "\
-"&& mv -f bin2 bin "\
+"&& mv -f ./bin2 ./bin "\
 "&& cd bin "\
-"&& mv postgres postgres2 "\
 "&& ln -s ../../bin/* ./ "\
-"&& mv -f postgres2 postgres"
+"&& rm postgres"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/busybox:20181005-edge as init
