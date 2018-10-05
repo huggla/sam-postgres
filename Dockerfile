@@ -1,16 +1,9 @@
-ARG PG_VERSION="10.5"
-ARG DOWNLOADS="http://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2"
-ARG BUILDDEPS="git g++ python3-dev bison coreutils dpkg-dev dpkg flex gcc libc-dev libedit-dev libxml2-dev libxslt-dev make libressl-dev perl-utils perl-ipc-run util-linux-dev zlib-dev openldap-dev"
-ARG RUNDEPS=""
-ARG RUNDEPS_UNTRUSTED=""
+ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
 ARG REMOVEFILES=""
 ARG EXECUTABLES=""
 
-FROM huggla/mariadb:10.3.9 as mariadb
 FROM huggla/busybox as init
-
-COPY --from=mariadb /mariadb-apks /tmp/mariadb-apks
 
 FROM huggla/build as build
 
