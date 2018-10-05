@@ -6,7 +6,8 @@ ARG BUILDCMDS=\
 "&& ln -s ../../usr/* ./ "\
 "&& mv -f bin2 bin "\
 "&& cd bin "\
-"&& ln -s ../../bin/* ./"
+"&& ln -s ../../bin/* ./ "\
+"&& rm postgres"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/busybox:20181005-edge as init
