@@ -1,69 +1,14 @@
 ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
-ARG REMOVEFILES=""
-ARG EXECUTABLES=""
+ARG EXECUTABLES="/usr/bin/postgres"
 
-FROM huggla/busybox as init
+FROM huggla/busybox:20181005-edge as init
 
-FROM huggla/build as build
+FROM huggla/build:20181005-edge as build
 
-FROM huggla/base as image
+FROM huggla/base:20181005-edge as image
 
-ENV VAR_LINUX_USER="mysql" \
-    VAR_FINAL_COMMAND="/usr/local/bin/mysqld \$extraConfig" \
-    VAR_param_datadir="/mariadbdata" \
-    VAR_param_socket="/run/mysqld/mysqld.sock" \
-    VAR_param_character_set_server="utf8" \
-    VAR_param_collation_server="utf8_general_ci" \
-    VAR_param_port=3306
-
-ONBUILD USER root
-
-FROM huggla/alpine-slim:20180927-edge as stage3
-FROM huggla/alpine:20180628-edge as stage2
-FROM huggla/alpine-slim:20180927-edge as stage1
-
-USER root
-
-# Build-only variables
-ENV CONFIG_DIR="/etc/postgres"
-#    PG_MAJOR="10" \
-#PG_VERSION="10.5"
-
-COPY --from=stage2 / /
-COPY --from=stage3 / /
-COPY ./rootfs/start /start
-COPY ./rootfs/usr/local/share/postgresql/extension/* /usr/local/share/postgresql/extension/
-COPY ./rootfs/initdb /rootfs/initdb
-
-RUN 
-
- && sed -i 's|#define DEFAULT_PGSOCKET_DIR  "/tmp"|#define DEFAULT_PGSOCKET_DIR  "/var/run/postgresql"|g' "$buildDir/src/include/pg_config_manual.h" \
- && wget -O "$buildDir/config/config.guess" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
- && wget -O "$buildDir/config/config.sub" 'http://git.savannah.gnu.org/cgit/config.git/plain/config.sub?id=7d3d27baf8107b630586c962c057e22149653deb' \
- && mkdir -p /usr/local/include \
- && cd "$buildDir" \
- && ./configure --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" --enable-integer-datetimes --enable-thread-safety --enable-tap-tests --disable-rpath --with-uuid=e2fs --with-gnu-ld --with-pgport=5432 --prefix=/usr/local --with-includes=/usr/local/include --with-libraries=/usr/local/lib --with-openssl --with-libxml --with-libxslt --with-ldap --with-python PYTHON='/usr/bin/python3.6' \
- && make -j "$(nproc)" world \
- && make install-world \
- && make -C contrib install \
- && rm -rf * \
- && git clone https://github.com/tds-fdw/tds_fdw.git \
- && cd tds_fdw \
- && runDeps="$(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' )" \
- && apk add --no-cache --virtual .postgresql-rundeps $runDeps freetds \
- && make USE_PGXS=1 \
- && make USE_PGXS=1 install \
-# && apk del .build-deps \
- && cd / \
- && rm -rf "$buildDir" /usr/local/share/doc /usr/local/share/man \
- && find /usr/local -name '*.a' -delete \
- && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/postgresql/postgresql.conf.sample \
- && mkdir -p /rootfs/usr \
- && cp -a /usr/local /rootfs/usr/ \
- && chmod go= /rootfs/initdb
- 
-FROM huggla/base
+ARG CONFIG_DIR="/etc/postgres"
 
 ENV VAR_LINUX_USER="postgres" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
