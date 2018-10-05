@@ -2,7 +2,7 @@ ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb /usr/local/share"
 ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
-"&& ln -s ../../usr/* ./"
+"&& ln -sf ../../usr/* ./"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/busybox:20181005-edge as init
