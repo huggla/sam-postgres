@@ -2,7 +2,8 @@ ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
 ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
-"&& ln -sf ../../usr/* ./ "\
+"&& rm -rf bin "\
+"&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
 "&& mkdir bin "\
 "&& cd bin "\
