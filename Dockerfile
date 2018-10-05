@@ -1,4 +1,7 @@
 ARG RUNDEPS="postgresql"
+ARG BUILDCMDS=\
+"   mkdir -p /usr/local/share "\
+"&& ln -s /usr/share/postgresql /usr/local/share/"
 ARG MAKEDIRS="/initdb"
 ARG EXECUTABLES="/usr/bin/postgres"
 
