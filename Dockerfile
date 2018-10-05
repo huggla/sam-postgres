@@ -1,5 +1,5 @@
 ARG RUNDEPS="postgresql"
-ARG MAKEDIRS="/initdb /usr/local/share"
+ARG MAKEDIRS="/initdb"
 ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
 "&& ln -sf ../../usr/* ./"
