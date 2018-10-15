@@ -1,5 +1,5 @@
 ARG PGAGENTVERSION="4.0.0"
-ARG BUILDDEPS="postgresql-dev cmake gcc libc-dev make boost-dev"
+ARG BUILDDEPS="postgresql-dev cmake gcc g++ libc-dev make boost-dev"
 ARG DOWNLOADS="https://ftp.postgresql.org/pub/pgadmin/pgagent/pgAgent-$PGAGENTVERSION-Source.tar.gz"
 ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
