@@ -2,7 +2,6 @@ ARG PGAGENTVERSION="4.0.0"
 ARG BUILDDEPS="postgresql-dev cmake gcc g++ libc-dev make boost-dev"
 ARG DOWNLOADS="https://ftp.postgresql.org/pub/pgadmin/pgagent/pgAgent-$PGAGENTVERSION-Source.tar.gz"
 ARG RUNDEPS="postgresql"
-ARG MAKEDIRS="/initdb"
 ARG BUILDCMDS=\
 "   cd pgAgent-$PGAGENTVERSION-Source "\
 "&& cmake -DCMAKE_INSTALL_PREFIX=/usr -DSTATIC_BUILD:BOOLEAN=FALSE "\
