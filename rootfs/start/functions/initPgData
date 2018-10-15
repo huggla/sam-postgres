@@ -5,7 +5,7 @@ initPgData(){
    /bin/chgrp $VAR_LINUX_USER /etc/passwd
    local -
    set +e
-   runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/pg_ctl initdb --options=\"--pgdata='$dataDir' --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile='$pwFile'\""
+   runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/pg_ctl initdb --pgdata=\"$dataDir\" --options='--locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\"'"
    local exitCode=$?
    set -e
    /bin/chown root "$pwFile"
