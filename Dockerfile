@@ -20,9 +20,9 @@ ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/busybox:20181005-edge as init
 
-FROM huggla/build:20181005-edge as build
+FROM huggla/build as build
 
-FROM huggla/base:20181005-edge as image
+FROM huggla/base as image
 
 ARG CONFIG_DIR="/etc/postgres"
 
