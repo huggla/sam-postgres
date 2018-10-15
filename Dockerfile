@@ -1,11 +1,11 @@
 ARG PGAGENTVERSION="4.0.0"
-ARG BUILDDEPS="postgresql-dev cmake build-base boost-dev"
+ARG BUILDDEPS="postgresql-dev cmake gcc make boost-dev"
 ARG DOWNLOADS="https://ftp.postgresql.org/pub/pgadmin/pgagent/pgAgent-$PGAGENTVERSION-Source.tar.gz"
 ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
 ARG BUILDCMDS=\
 "   cd pgAgent-$PGAGENTVERSION-Source "\
-"&& cmake "\
+"&& cmake -DCMAKE_INSTALL_PREFIX=/usr -DSTATIC_BUILD:BOOLEAN=FALSE "\
 "&& make "\
 "&& cp *.sql *.control sql/* /imagefs/usr/share/postgresql/extension/ "\
 "&& cd /imagefs/usr/local "\
