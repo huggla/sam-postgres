@@ -1,7 +1,14 @@
+ARG PGAGENTVERSION="4.0.0"
+ARG BUILDDEPS="postgres-dev cmake build-base boost-dev"
+ARG DOWNLOADS="https://ftp.postgresql.org/pub/pgadmin/pgagent/pgAgent-$PGAGENTVERSION-Source.tar.gz"
 ARG RUNDEPS="postgresql"
 ARG MAKEDIRS="/initdb"
 ARG BUILDCMDS=\
-"   cd /imagefs/usr/local "\
+"   cd pgAgent-$PGAGENTVERSION-Source "\
+"&& cmake "\
+"&& make "\
+"&& cp *.sql *.control sql/* /imagefs/usr/share/postgresql/extension/ "\
+"&& cd /imagefs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
