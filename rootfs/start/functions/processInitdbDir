@@ -1,5 +1,5 @@
 processInitdbDir(){
-   local psql_cmd="/usr/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER"
+   local psql_cmd="/usr/bin/psql --variable=ON_ERROR_STOP=1 --username $VAR_LINUX_USER --host=$VAR_param_unix_socket_directories"
    local filename=""
    local dbname=""
    local -
