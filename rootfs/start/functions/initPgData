@@ -5,7 +5,7 @@ initPgData(){
    /bin/chgrp $VAR_LINUX_USER /etc/passwd
    local -
    set +e
-   runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
+   runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/initdb --pgdata=\"$dataDir\" --locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\""
    local exitCode=$?
    set -e
    /bin/chown root "$pwFile"
@@ -17,10 +17,10 @@ initPgData(){
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
-      runBinCmdAsLinuxUser "/usr/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
+      runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost'\" --wait start"
       echo
       processInitdbDir
-      runBinCmdAsLinuxUser "/usr/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
+      runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --mode=fast --wait stop"
       echo
       printInitPassword "$(pwFromFile "$pwFile")"
    fi
