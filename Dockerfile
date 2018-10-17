@@ -1,4 +1,4 @@
-ARG RUNDEPS="postgresql"
+ARG RUNDEPS="postgresql postgresql-plpython3"
 ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
 "&& rm -rf bin "\
@@ -11,9 +11,11 @@ ARG BUILDCMDS=\
 ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/pgagent as pgagent
+FROM huggla/tds_fdw as tds_fdw
 FROM huggla/busybox:20181005-edge as init
 
 COPY --from=pgagent /pgagent/usr/share/postgresql/extension /usr/share/postgresql/extension
+COPY --from=tds_fdw /tds_fdw/usr /usr
 
 FROM huggla/build as build
 FROM huggla/base as image
