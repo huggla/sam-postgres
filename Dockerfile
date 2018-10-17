@@ -1,4 +1,4 @@
-ARG RUNDEPS="postgresql"
+ARG RUNDEPS="postgresql postgresql-plpython3"
 ARG BUILDCMDS=\
 "   cd /imagefs/usr/local "\
 "&& rm -rf bin "\
