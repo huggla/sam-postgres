@@ -13,7 +13,7 @@ ARG EXECUTABLES="/usr/bin/postgres"
 FROM huggla/pgagent as pgagent
 FROM huggla/busybox:20181005-edge as init
 
-COPY --from=pgagent /usr/share/postgresql/extension /usr/share/postgresql/extension
+COPY --from=pgagent /pgagent/usr/share/postgresql/extension /usr/share/postgresql/extension
 
 FROM huggla/build as build
 FROM huggla/base as image
