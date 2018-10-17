@@ -1,13 +1,6 @@
-ARG PGAGENTVERSION="4.0.0"
-ARG BUILDDEPS="postgresql-dev cmake gcc g++ libc-dev make boost-dev"
-ARG DOWNLOADS="https://ftp.postgresql.org/pub/pgadmin/pgagent/pgAgent-$PGAGENTVERSION-Source.tar.gz"
 ARG RUNDEPS="postgresql"
 ARG BUILDCMDS=\
-"   cd pgAgent-$PGAGENTVERSION-Source "\
-"&& cmake -DCMAKE_INSTALL_PREFIX=/usr -DSTATIC_BUILD:BOOLEAN=FALSE "\
-"&& make "\
-"&& cp *.sql *.control sql/* /imagefs/usr/share/postgresql/extension/ "\
-"&& cd /imagefs/usr/local "\
+"   cd /imagefs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
@@ -17,10 +10,12 @@ ARG BUILDCMDS=\
 "&& rm postgres"
 ARG EXECUTABLES="/usr/bin/postgres"
 
+FROM huggla/pgagent as pgagent
 FROM huggla/busybox:20181005-edge as init
 
-FROM huggla/build as build
+COPY --from=pgagent /usr/share/postgresql/extension /usr/share/postgresql/
 
+FROM huggla/build as build
 FROM huggla/base as image
 
 ARG CONFIG_DIR="/etc/postgres"
