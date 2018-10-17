@@ -37,4 +37,4 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\""
 
-ONBUILD USER root
+ONBUILD COPY --from=build /imagefs /
