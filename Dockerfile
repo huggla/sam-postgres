@@ -12,7 +12,7 @@ ARG EXECUTABLES="/usr/bin/postgres"
 
 FROM huggla/pgagent as pgagent
 FROM huggla/tds_fdw as tds_fdw
-FROM huggla/busybox:20181005-edge as init
+FROM huggla/busybox:20181017-edge as init
 
 COPY --from=pgagent /pgagent/usr/share/postgresql/extension /usr/share/postgresql/extension
 COPY --from=tds_fdw /tds_fdw/usr /usr
