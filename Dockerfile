@@ -1,6 +1,7 @@
 ARG RUNDEPS="postgresql"
 ARG BUILDCMDS=\
-"   cd /imagefs/usr/local "\
+"   mkdir -p /imagefs/usr/local "\
+"&& cd /imagefs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
