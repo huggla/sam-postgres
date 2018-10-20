@@ -20,6 +20,8 @@ COPY --from=tds_fdw /tds_fdw/usr /usr
 FROM huggla/build as build
 FROM huggla/base as image
 
+COPY --from=build /imagefs /
+
 ARG CONFIG_DIR="/etc/postgres"
 
 ENV VAR_LINUX_USER="postgres" \
