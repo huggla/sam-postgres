@@ -46,4 +46,11 @@ ENV VAR_LINUX_USER="postgres" \
 #---------------Don't edit----------------
 USER starter
 ONBUILD USER root
+ONBUILD RUN chmod u+s /usr/local/bin/sudo \
+         && chmod go= /environment \
+         && chmod -R o= /start /etc/sudoers* /usr/lib/sudo /tmp \
+         && chmod u=rx,go= /start/stage1 /start/stage2 \
+         && chmod -R g=r,o= /stop \
+         && chmod g=rx /stop /stop/functions \
+         && chmod u=rwx,g=rx /stop/stage1
 #-----------------------------------------
