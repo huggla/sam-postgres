@@ -1,9 +1,9 @@
 ARG CONTENTIMAGE1="huggla/pgagent"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
-ARG CONTENTDESTINATION1="/imagefs/usr/share/postgresql/extension"
+ARG CONTENTDESTINATION1="/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw"
 ARG CONTENTSOURCE2="/tds_fdw/usr"
-ARG CONTENTDESTINATION2="/imagefs/usr"
+ARG CONTENTDESTINATION2="/usr"
 ARG RUNDEPS="postgresql"
 ARG BUILDCMDS=\
 "   mkdir -p /imagefs/usr/local "\
