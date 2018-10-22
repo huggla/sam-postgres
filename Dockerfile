@@ -1,3 +1,9 @@
+ARG CONTENTIMAGE1="huggla/pgagent"
+ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
+ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
+ARG CONTENTIMAGE2="huggla/tds_fdw"
+ARG CONTENTSOURCE2="/tds_fdw/usr"
+ARG CONTENTDESTINATION2="/buildfs/usr"
 ARG RUNDEPS="postgresql"
 ARG BUILDCMDS=\
 "   mkdir -p /imagefs/usr/local "\
@@ -11,17 +17,14 @@ ARG BUILDCMDS=\
 "&& rm postgres"
 ARG EXECUTABLES="/usr/bin/postgres"
 
-FROM huggla/pgagent as pgagent
-FROM huggla/tds_fdw as tds_fdw
-FROM huggla/base as init
-
-COPY --from=pgagent /pgagent/usr/share/postgresql/extension /usr/share/postgresql/extension
-COPY --from=tds_fdw /tds_fdw/usr /usr
-
+#---------------Don't edit----------------
+FROM ${CONTENTIMAGE1:-scratch} as content1
+FROM ${CONTENTIMAGE2:-scratch} as content2
+FROM ${BASEIMAGE:-huggla/base} as base
 FROM huggla/build as build
-FROM huggla/base as image
-
-COPY --from=build /imagefs /
+FROM ${BASEIMAGE:-huggla/base} as image
+COPY --from=build /buildfs /
+#-----------------------------------------
 
 ARG CONFIG_DIR="/etc/postgres"
 
