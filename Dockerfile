@@ -47,3 +47,5 @@ ENV VAR_LINUX_USER="postgres" \
 USER starter
 ONBUILD USER root
 #-----------------------------------------
+
+STOPSIGNAL SIGINT
