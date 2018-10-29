@@ -1,5 +1,5 @@
 ARG BASEIMAGE="huggla/postgres-alpine"
-ARG RUNDEPS="postgis"
+ARG RUNDEPS="plpython3"
 
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
