@@ -1,7 +1,7 @@
 **Note! I use Docker latest tag for development, which means that it isn't allways working. Date tags are stable.**
 
 # postgres-alpine
-A small and secure Docker image of Postgresql (currently 10.5). Will execute .sh and .sql files located in /initdb when a new datastore is created.
+A small and secure Docker image of Postgresql (currently 10.5) with Plpython3. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
@@ -23,7 +23,7 @@ A small and secure Docker image of Postgresql (currently 10.5). Will execute .sh
 * VAR_param_timezone="'UTC'"
 
 ### Optional runtime variables
-* VAR_param_&lt;postgres parameter name&gt;_&lt;
+* VAR_param_&lt;postgres parameter name&gt;
 * VAR_password_file_&lt;VAR_LINUX_USER&gt;
 * VAR_password_&lt;VAR_LINUX_USER&gt;
 * VAR_ENCRYPT_PW (set to "yes" to hash password with Argon2)
