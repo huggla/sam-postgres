@@ -1,6 +1,0 @@
-writeHbaFile(){
-   for row in $VAR_HBA
-   do
-      trim "$row" >> "$hbaFile"
-   done
-}
