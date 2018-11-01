@@ -1,11 +1,5 @@
-ARG BASEIMAGE="huggla/postgres-alpine"
-ARG ADDREPOS="http://dl-cdn.alpinelinux.org/alpine/edge/testing"
-ARG RUNDEPS_UNTRUSTED="postgis"
-ARG BUILDCMDS=\
-"   cd /imagefs/usr/local "\
-"&& rm -rf lib share "\
-"&& ln -sf ../../usr/lib lib "\
-"&& ln -sf ../../usr/share share "
+ARG BASEIMAGE="huggla/postgres-alpine:postgis"
+ARG RUNDEPS="postgresql-plpython3"
 
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
