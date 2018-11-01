@@ -13,6 +13,7 @@ initPgData(){
       tryDelete "$pwFile"
       return $exitCode
    else
+      chmod o+w "$dataDir/postgresql.conf" "$dataDir/pg_hba.conf" "$dataDir/pg_ident.conf"
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
