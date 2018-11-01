@@ -2,13 +2,13 @@ initPgData(){
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
    /bin/chmod g+r "$pwFile"
-   /bin/chmod g=rx "$dataDir"
    if [ "$dataDir" != "/pgdata" ]
    then
       /bin/chmod g=rx "$dataDir"
       /bin/chown $VAR_LINUX_USER "$dataDir"
       if [ ! "$(ls -A /pgdata)" ]
       then
+         runBinCmdAsLinuxUser "/bin/chmod g=rwX /pgdata"
          rm -rf /pgdata
       fi
    fi
