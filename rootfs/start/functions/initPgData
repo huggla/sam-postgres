@@ -13,8 +13,10 @@ initPgData(){
       tryDelete "$pwFile"
       return $exitCode
    else
-      runBinCmdAsLinuxUser "/bin/chmod o+w \"$dataDir/postgresql.conf\" \"$dataDir/pg_hba.conf\" \"$dataDir/pg_ident.conf\""
-      tryDelete "$dataDir/postgresql.conf"
+      ls -la "$dataDir"
+      runBinCmdAsLinuxUser "/bin/chmod ugo+rw \"$dataDir/postgresql.conf\" \"$dataDir/pg_hba.conf\" \"$dataDir/pg_ident.conf\""
+ls -la "$dataDir"
+tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
       runBinCmdAsLinuxUser "/usr/local/bin/pg_ctl --pgdata=\"$VAR_CONFIG_DIR\" --options=\"-c listen_addresses='localhost' -k $VAR_param_unix_socket_directories\" --wait start"
