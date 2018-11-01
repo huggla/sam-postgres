@@ -1,14 +1,13 @@
 initPgData(){
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
-   /bin/chown $VAR_LINUX_USER "$pwFile"
-   /bin/chgrp $VAR_LINUX_USER /etc/passwd
+   /bin/chmod g+r "$pwFile"
    local -
    set +e
    runBinCmdAsLinuxUser "TZ=$(removeSingleQuotes "$VAR_param_timezone") /usr/local/bin/pg_ctl initdb --pgdata=\"$dataDir\" --options='--locale=$VAR_LOCALE --encoding=$VAR_ENCODING --text-search-config=$VAR_TEXT_SEARCH_CONFIG --username=$VAR_LINUX_USER --pwfile=\"$pwFile\"'"
    local exitCode=$?
    set -e
-   /bin/chown root "$pwFile"
+   /bin/chmod g-r "$pwFile"
    if [ "$exitCode" != "0" ]
    then
       tryDelete "$pwFile"
