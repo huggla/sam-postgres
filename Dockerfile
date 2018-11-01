@@ -29,7 +29,7 @@ COPY --from=build /imagefs /
 ARG CONFIG_DIR="/etc/postgres"
 
 ENV VAR_LINUX_USER="postgres" \
-    VAR_INIT_CAPS="cap_chown" \
+    VAR_INIT_CAPS="cap_chown,cap_fowner" \
     VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
     VAR_LOCALE="en_US.UTF-8" \
     VAR_ENCODING="UTF8" \
