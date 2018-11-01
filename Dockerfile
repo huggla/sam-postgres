@@ -16,7 +16,7 @@ ARG BUILDCMDS=\
 "&& cd bin "\
 "&& ln -s ../../bin/* ./ "\
 "&& rm postgres "\
-"&& chmod g=rx /imagefs/pgdata"
+"&& chmod g=rwx /imagefs/pgdata"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 #---------------Don't edit----------------
