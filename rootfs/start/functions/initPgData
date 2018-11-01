@@ -13,7 +13,7 @@ initPgData(){
       tryDelete "$pwFile"
       return $exitCode
    else
-      /usr/local/bin/sudo -u $VAR_LINUX_USER /bin/chmod o+w "$dataDir/postgresql.conf" "$dataDir/pg_hba.conf" "$dataDir/pg_ident.conf"
+      runBinCmdAsLinuxUser "/bin/chmod o+w \"$dataDir/postgresql.conf\" \"$dataDir/pg_hba.conf\" \"$dataDir/pg_ident.conf\""
       tryDelete "$dataDir/postgresql.conf"
       tryDelete "$dataDir/pg_hba.conf"
       tryDelete "$dataDir/pg_ident.conf"
