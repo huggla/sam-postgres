@@ -14,7 +14,8 @@ ARG BUILDCMDS=\
 "&& mkdir bin "\
 "&& cd bin "\
 "&& ln -s ../../bin/* ./ "\
-"&& rm postgres"
+"&& rm postgres "\
+"&& chmod g+w /pgdata"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 #---------------Don't edit----------------
