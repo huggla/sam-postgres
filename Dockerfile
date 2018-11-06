@@ -26,7 +26,7 @@ FROM huggla/build:$TAG as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
-COPY --from=freetds /tmp/freetds /
+COPY --from=freetds /freetds /
 RUN chown 102 /pgdata
 
 ARG CONFIG_DIR="/etc/postgres"
