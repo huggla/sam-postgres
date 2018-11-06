@@ -1,4 +1,4 @@
-ARG TAG="20181101-edge"
+ARG TAG="20181106-edge"
 ARG BASEIMAGE="huggla/postgres-alpine:$TAG"
 ARG ADDREPOS="http://dl-cdn.alpinelinux.org/alpine/edge/testing"
 ARG RUNDEPS_UNTRUSTED="postgis"
