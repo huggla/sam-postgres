@@ -1,4 +1,4 @@
-ARG TAG="20181101-edge"
+ARG TAG="20181106-edge"
 ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/usr/share/postgresql/extension"
