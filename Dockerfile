@@ -46,7 +46,7 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_param_listen_addresses="'*'" \
     VAR_param_timezone="'UTC'" \
     VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\"" \
-    VAR_FREETDS_CONF="[global]\ntds version=auto\ntext size=64512"
+    VAR_FREETDS_CONF="[global]\\ntds version=auto\\ntext size=64512"
 
 #---------------Don't edit----------------
 USER starter
