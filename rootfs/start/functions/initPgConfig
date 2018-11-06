@@ -9,4 +9,8 @@ initPgConfig(){
    then
       writeHbaFile
    fi
+   if [ ! -s "/etc/freetds.conf" ]
+   then
+      echo -e "$VAR_FREETDS_CONF" > /etc/freetds.conf
+   fi
 }
