@@ -1,4 +1,4 @@
-FROM huggla/freetds as freetds
+FROM huggla/freetds:20181106-edge as freetds
 FROM huggla/alpine:20180628-edge
 
 USER root
@@ -11,7 +11,7 @@ ENV CONFIG_DIR="/etc/postgres" \
 COPY ./start /start
 COPY ./extension/* /usr/local/share/postgresql/extension/
 COPY ./initdb /initdb 
-COPY --from=freetds /tmp/freetds /
+COPY --from=freetds /freetds /
 
 RUN chmod go= /initdb \
  && downloadDir="$(mktemp -d)" \
