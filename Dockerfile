@@ -5,7 +5,7 @@ ARG CONTENTDESTINATION1="/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
 ARG CONTENTSOURCE2="/tds_fdw/usr"
 ARG CONTENTDESTINATION2="/usr"
-ARG RUNDEPS="postgresql postgresql-contrib"
+ARG RUNDEPS="postgresql postgresql-contrib unixodbc"
 ARG BUILDCMDS=\
 "   mkdir -p /imagefs/usr/local /imagefs/pgdata "\
 "&& cd /imagefs/usr/local "\
@@ -17,7 +17,7 @@ ARG BUILDCMDS=\
 "&& ln -s ../../bin/* ./ "\
 "&& rm postgres"
 ARG EXECUTABLES="/usr/bin/postgres"
-FROM huggla/freetds:1.00.103 as freetds
+
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
@@ -26,7 +26,7 @@ FROM huggla/build:$TAG as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
-COPY --from=freetds /freetds /
+
 RUN chown 102 /pgdata
 
 ARG CONFIG_DIR="/etc/postgres"
