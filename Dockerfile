@@ -1,4 +1,4 @@
-ARG TAG="20181106-edge"
+ARG TAG="20181108-edge"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
 ARG RUNDEPS="postgresql-plpython3"
 
