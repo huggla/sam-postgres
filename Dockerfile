@@ -15,7 +15,7 @@ ARG BUILDCMDS=\
 "&& mkdir bin "\
 "&& cd bin "\
 "&& ln -s ../../bin/* ./ "\
-"&& rm postgres"
+"&& rm postgres /etc/freetds.conf"
 ARG EXECUTABLES="/usr/bin/postgres"
 
 #---------------Don't edit----------------
