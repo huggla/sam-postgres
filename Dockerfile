@@ -7,7 +7,7 @@ ARG CONTENTSOURCE2="/tds_fdw"
 ARG CONTENTDESTINATION2="/"
 ARG RUNDEPS="postgresql postgresql-contrib unixodbc"
 ARG BUILDCMDS=\
-"   mkdir -p /imagefs/usr/local /imagefs/pgdata "\
+"   mkdir -p /imagefs/usr/local "\
 "&& cd /imagefs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
@@ -26,8 +26,6 @@ FROM huggla/build:$TAG as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
-
-RUN chown 102 /pgdata
 
 ARG CONFIG_DIR="/etc/postgres"
 
