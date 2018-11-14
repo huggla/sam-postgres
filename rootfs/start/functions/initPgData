@@ -4,10 +4,11 @@ initPgData(){
    /bin/chmod g+r "$pwFile"
    if [ ! "$(/bin/ls -A "$dataDir")" ]
    then
-      /bin/rm -rf "$dataDir"
-      /bin/chmod go+w "$(/usr/bin/dirname "$dataDir")"
-      runBinCmdAsLinuxUser "/bin/mkdir -m 750 '$dataDir'"
-      /bin/chmod go-w "$(/usr/bin/dirname "$dataDir")"
+      /bin/rm -rf "$dataDir" \
+      && /bin/chmod go+w "$(/usr/bin/dirname "$dataDir")" \
+      && runBinCmdAsLinuxUser "/bin/mkdir -m 750 '$dataDir'" \
+      && /bin/chmod go-w "$(/usr/bin/dirname "$dataDir")" \
+      || /bin/true
    fi
    local -
    set +e
