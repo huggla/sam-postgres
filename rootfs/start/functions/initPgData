@@ -8,8 +8,7 @@ initPgData(){
       /bin/chown $VAR_LINUX_USER "$dataDir"
       if [ ! "$(ls -A /pgdata)" ]
       then
-         runBinCmdAsLinuxUser "/bin/chmod g=rwX /pgdata"
-         rm -rf /pgdata
+         runBinCmdAsLinuxUser "/bin/rm -rf /pgdata"
       fi
    fi
    local -
