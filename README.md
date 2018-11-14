@@ -30,7 +30,7 @@ A small and secure Docker image of Postgresql (currently 11) with Pgagent (4) an
 * VAR_ENCRYPT_PW (set to "yes" to hash password with Argon2)
 
 ## Capabilities
-If keeping VAR_param_data_directory default value ('/pgdata') then all but SETPCAP, SETGID and SETUID can be dropped. If VAR_param_data_directory is changed at runtime then CHOWN is also needed.
+Can drop all but SETPCAP, SETGID and SETUID.
 
 ## Tips
 Works with huggla/pgagent-alpine, huggla/pgadmin-alpine, huggla/pgbouncer-alpine and huggla/postgres-backup.
