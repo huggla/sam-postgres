@@ -5,9 +5,9 @@ initPgData(){
    if [ ! "$(/bin/ls -A "$dataDir")" ]
    then
       /bin/rm -rf "$dataDir"
-      /bin/chmod o+w "$(/usr/bin/dirname "$dataDir")"
+      /bin/chmod o+rwx "$(/usr/bin/dirname "$dataDir")"
       runBinCmdAsLinuxUser "/bin/mkdir -m 750 '$dataDir'"
-      /bin/chmod o-w "$(/usr/bin/dirname "$dataDir")"
+      /bin/chmod o-rwx "$(/usr/bin/dirname "$dataDir")"
    fi
    local -
    set +e
