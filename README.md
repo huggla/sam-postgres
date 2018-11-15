@@ -1,7 +1,7 @@
 **Note! I use Docker latest tag for development, which means that it isn't allways working. Date tags are stable.**
 
 # postgres-alpine
-A small and secure Docker image of Postgresql (currently 11) with Pgagent (4) and tds_fdw extensions included. Separate tags with Postgis (2.5) and/or Plpython3 extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
+A small and secure Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3 extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
