@@ -1,10 +1,9 @@
-ARG TAG="20181113-edge"
+ARG TAG="20181204"
 ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
-ARG CONTENTDESTINATION1="/usr/share/postgresql/extension"
+ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
 ARG CONTENTSOURCE2="/tds_fdw"
-ARG CONTENTDESTINATION2="/"
 ARG RUNDEPS="postgresql postgresql-contrib unixodbc"
 ARG BUILDCMDS=\
 "   mkdir -p /imagefs/usr/local "\
@@ -21,8 +20,8 @@ ARG EXECUTABLES="/usr/bin/postgres"
 #---------------Don't edit----------------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
-FROM ${BASEIMAGE:-huggla/base:$TAG} as base
-FROM huggla/build:$TAG as build
+FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
+FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 COPY --from=build /imagefs /
 #-----------------------------------------
