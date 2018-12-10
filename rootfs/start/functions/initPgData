@@ -2,7 +2,7 @@ initPgData(){
    local dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    local pwFile="$(makePwFileForUser $VAR_LINUX_USER)"
    /bin/chmod g+r "$pwFile"
-   if [ ! "$(/bin/ls -A "$dataDir")" ]
+   if [ ! "$(/bin/ls -A "$dataDir" > /dev/null 2>&1)" ]
    then
       /bin/rm -rf "$dataDir" 2>/dev/null \
       && /bin/chmod go+w "$(/usr/bin/dirname "$dataDir")" \
