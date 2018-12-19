@@ -2,6 +2,7 @@
 A small and secure Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3 extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 20181204: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.2+, Freetds 1.00.109, Alpine edge.
+postgis-20181204: Postgis 2.5.0
 
 ## Environment variables
 ### pre-set runtime variables
