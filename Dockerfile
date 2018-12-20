@@ -4,7 +4,7 @@ ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
 ARG CONTENTSOURCE2="/tds_fdw"
-ARG RUNDEPS="postgresql postgresql-contrib unixodbc"
+ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG BUILDCMDS=\
 "   mkdir -p /imagefs/usr/local "\
 "&& cd /imagefs/usr/local "\
