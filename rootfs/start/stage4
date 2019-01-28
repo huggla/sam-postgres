@@ -7,6 +7,6 @@
 
 if [ "$isFirstRun" == "true" ]
 then
-   sed -i "s/:srsno/$VAR_SRID/g" /initdb/40.template_postgis.sql
-   sed -i "s/:gmlsrsname/$VAR_SRSNAME/g" /initdb/40.template_postgis.sql
+   sed -i "43i\\set srsno $VAR_SRID" /initdb/40.template_postgis.sql
+   sed -i "44i\\set gmlsrsname $VAR_SRSNAME" /initdb/40.template_postgis.sql
 fi
