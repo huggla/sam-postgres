@@ -1,12 +1,12 @@
 ARG TAG="20181204"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
-ARG MAKEDIRS="/initdb"
+ARG MAKEDIRS="/initdb/dropdb"
 ARG CITYDBVERSION="v4.0.1"
 ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
 ARG BUILDCMDS=\
 "   cp -a \$cloneGitsDir/3dcitydb/PostgreSQL/SQLScripts/* /imagefs/initdb/ "\
-"&& rm -f /imagefs/initdb/DROP_DB.sql "\
-"&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/40.template_postgis.sql"
+"&& mv /imagefs/initdb/DROP_DB.sql /imagefs/initdb/dropdb/ "\
+"&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/040.template_postgis.sql"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
