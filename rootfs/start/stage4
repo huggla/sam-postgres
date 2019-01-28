@@ -1,0 +1,13 @@
+# Set in stage2:
+# ---------------------------------------------------------
+# set -e +a +m +s +i -f
+# isFirstRun
+# VAR_*
+# All functions in /start/functions
+
+if [ "$isFirstRun" == "true" ]
+then
+   sed -i "s/:srsno/$VAR_SRID/" /initdb/40.template_postgis.sql
+   sed -i "s/:gmlsrsname/$VAR_SRSNAME/" /initdb/40.template_postgis.sql
+   cd /initdb
+fi
