@@ -1,7 +1,7 @@
 ARG TAG="20181204"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
 ARG CITYDBVERSION="v4.0.1"
-ARG CLONEGITS="'-b \"${CITYDBVERSION}\" --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
+ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
 ARG BUILDCMDS=\
 "   cp -a \$cloneGitsDir/PostgreSQL/SQLScripts/* /imagefs/initdb/ "\
 "&& rm -f /imagefs/initdb/DROP_DB.sql "\
