@@ -3,6 +3,7 @@ processInitdbDir(){
    local filename=""
    local dbname=""
    local -
+   cd /initdb
    set +f
    set -- "/initdb/"*
    while [ -f "$1" ]
