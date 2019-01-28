@@ -1,53 +1,35 @@
-ARG TAG="20190115"
-ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
-ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
-ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
-ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
-ARG CONTENTSOURCE2="/tds_fdw"
-ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
+ARG TAG="20181204"
+ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
+ARG CITYDBVERSION="v4.0.1"
+ARG CLONEGITS="'-b \"${CITYDBVERSION}\" --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
+ARG MAKEDIRS="/3dcitydb"
 ARG BUILDCMDS=\
-"   mkdir -p /imagefs/usr/local "\
-"&& cd /imagefs/usr/local "\
-"&& rm -rf bin "\
-"&& ln -s ../../usr/* ./ "\
-"&& rm bin "\
-"&& mkdir bin "\
-"&& cd bin "\
-"&& ln -s ../../bin/* ./ "\
-"&& rm postgres /imagefs/etc/freetds.conf /imagefs/RUNDEPS-tds_fdw"
-ARG EXECUTABLES="/usr/bin/postgres"
-
-#---------------Don't edit----------------
+"   cp -a $cloneGitsDir/PostgreSQL/SQLScripts/* /imagefs/initdb/ "\
+"&& rm -f /imagefs/initdb/DROP_DB.sql "\
+"&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/40.template_postgis.sql
+"&& sed -i 's/:srsno/\$VAR_SRID/' /imagefs/initdb/40.template_postgis.sql "\
+"&& sed -i 's/:gmlsrsname/\$VAR_SRSNAME/' /imagefs/initdb/40.template_postgis.sql"
+#--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
-FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
+FROM ${BUILDIMAGE:-huggla/build} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
+ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
+ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
+ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ARG CLONEGITSDIR
+ARG DOWNLOADSDIR
+ARG MAKEDIRS
+ARG MAKEFILES
+ARG EXECUTABLES
+ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-#-----------------------------------------
-
-ARG CONFIG_DIR="/etc/postgres"
-
-ENV VAR_LINUX_USER="postgres" \
-    VAR_INIT_CAPS="cap_chown" \
-    VAR_CONFIG_FILE="$CONFIG_DIR/postgresql.conf" \
-    VAR_LOCALE="en_US.UTF-8" \
-    VAR_ENCODING="UTF8" \
-    VAR_TEXT_SEARCH_CONFIG="english" \
-    VAR_HBA="local all all trust, host all all 127.0.0.1/32 trust, host all all ::1/128 trust, host all all all md5" \
-    VAR_CREATE_EXTENSION_PGAGENT="yes" \
-    VAR_param_data_directory="'/pgdata'" \
-    VAR_param_hba_file="'$CONFIG_DIR/pg_hba.conf'" \
-    VAR_param_ident_file="'$CONFIG_DIR/pg_ident.conf'" \
-    VAR_param_unix_socket_directories="'/var/run/postgresql'" \
-    VAR_param_listen_addresses="'*'" \
-    VAR_param_timezone="'UTC'" \
-    VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\"" \
-    VAR_FREETDS_CONF="[global]\\ntds version=auto\\ntext size=64512"
-
-#---------------Don't edit----------------
+#---------------------------------------------
+ENV VAR_SRID="4326" \
+    VAR_SRSNAME="urn:ogc:def:crs:EPSG::4326"
+#--------Generic template (don't edit)--------
 USER starter
 ONBUILD USER root
-#-----------------------------------------
-
-STOPSIGNAL SIGINT
+#---------------------------------------------
