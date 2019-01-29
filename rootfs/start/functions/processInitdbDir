@@ -29,5 +29,5 @@ processInitdbDir(){
       /bin/rm -f "$1"
       set -- "/initdb/"*
    done
-   set -f
+   cd /
 }
