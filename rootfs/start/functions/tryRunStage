@@ -3,7 +3,10 @@ tryRunStage(){
    then
       for file in /start/stage3/*
       do
-         . "$file"
+         if [ -f "$file" ]
+         then
+            . "$file"
+         fi
       done
    fi
 }
