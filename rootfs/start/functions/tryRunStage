@@ -1,6 +1,9 @@
 tryRunStage(){
-   for file in /start/stage3/*
-   do
-      . "$file"
-   done
+   if [ -d "/start/stage3" ]
+   then
+      for file in /start/stage3/*
+      do
+         . "$file"
+      done
+   fi
 }
