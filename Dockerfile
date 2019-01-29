@@ -5,26 +5,36 @@ ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
 ARG CONTENTSOURCE2="/tds_fdw"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
+ARG MAKEDIRS="/usr/local"
 ARG BUILDCMDS=\
-"   mkdir -p /imagefs/usr/local "\
-"&& cd /imagefs/usr/local "\
+"   cd /imagefs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
 "&& mkdir bin "\
 "&& cd bin "\
-"&& ln -s ../../bin/* ./ "\
-"&& rm postgres /imagefs/etc/freetds.conf /imagefs/RUNDEPS-tds_fdw"
+"&& ln -s ../../bin/* ./"
 ARG EXECUTABLES="/usr/bin/postgres"
+ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS-tds_fdw"
 
-#---------------Don't edit----------------
+#--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
-FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
+FROM ${BUILDIMAGE:-huggla/build} as build
 FROM ${BASEIMAGE:-huggla/base:$TAG} as image
+ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
+ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
+ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ARG CLONEGITSDIR
+ARG DOWNLOADSDIR
+ARG MAKEDIRS
+ARG MAKEFILES
+ARG EXECUTABLES
+ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-#-----------------------------------------
+#---------------------------------------------
 
 ARG CONFIG_DIR="/etc/postgres"
 
@@ -45,9 +55,9 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\"" \
     VAR_FREETDS_CONF="[global]\\ntds version=auto\\ntext size=64512"
 
-#---------------Don't edit----------------
+#--------Generic template (don't edit)--------
 USER starter
 ONBUILD USER root
-#-----------------------------------------
+#---------------------------------------------
 
 STOPSIGNAL SIGINT
