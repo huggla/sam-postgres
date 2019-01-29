@@ -1,9 +1,10 @@
 tryRunStage(){
    local stagePath="${0%/*}/stage"
-   local stageNumber=3
+   local stageNumber=${1:-3}
    while [ -f "$stagePath$stageNumber" ]
    do
       . "$stagePath$stageNumber"
+      /bin/rm -f "$stagePath$stageNumber"
       stageNumber="$(expr $stageNumber + 1)"
    done
 }
