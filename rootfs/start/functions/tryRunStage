@@ -1,5 +1,5 @@
 tryRunStage(){
-   for file in /start/*.imageStage
+   for file in /start/stage3/*
    do
       . "$file"
    done
