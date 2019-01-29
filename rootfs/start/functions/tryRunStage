@@ -1,4 +1,6 @@
 tryRunStage(){
+   local -
+   set f+
    if [ -d "/start/stage3" ]
    then
       for file in /start/stage3/*
