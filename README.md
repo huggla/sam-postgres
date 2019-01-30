@@ -11,6 +11,8 @@ postgis-20181204: Postgis 2.5.0.
 
 postgis-20190129: Postgis 2.5.1.
 
+3dcity-20190129: 3DCity 4.0.1, Postgis 2.5.1.
+
 ## Environment variables
 ### pre-set runtime variables
 * VAR_CONFIG_FILE="/etc/postgres/postgresql.conf"
