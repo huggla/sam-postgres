@@ -7,6 +7,8 @@ postgis-20181204: Postgis 2.5.0.
 
 3dcity-20181204: 3DCity 4.0.1, Postgis 2.5.0.
 
+20190129: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.3+, Freetds 1.00.111, Alpine edge.
+
 ## Environment variables
 ### pre-set runtime variables
 * VAR_CONFIG_FILE="/etc/postgres/postgresql.conf"
