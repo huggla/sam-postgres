@@ -1,5 +1,5 @@
 # postgres-alpine
-A small and secure Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3 extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
+A small and secure Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3, 3DCityDB extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 20181204: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.2+, Freetds 1.00.109, Alpine edge.
 
@@ -11,7 +11,7 @@ postgis-20181204: Postgis 2.5.0.
 
 postgis-20190129: Postgis 2.5.1.
 
-3dcity-20190129: 3DCity 4.0.1, Postgis 2.5.1.
+3dcitydb-20190129: 3DCityDB 4.0.1, Postgis 2.5.1.
 
 ## Environment variables
 ### pre-set runtime variables
@@ -32,8 +32,8 @@ postgis-20190129: Postgis 2.5.1.
 * VAR_param_listen_addresses="'*'"
 * VAR_param_timezone="'UTC'"
 * VAR_FREETDS_CONF="[global]\\ntds version=auto\\ntext size=64512" (contents of /etc/freerds.conf)
-* VAR_SRID="4326" (only for 3dcity)
-* VAR_SRSNAME="urn:ogc:def:crs:EPSG::4326" (only for 3dcity)
+* VAR_SRID="4326" (only for 3dcitydb)
+* VAR_SRSNAME="urn:ogc:def:crs:EPSG::4326" (only for 3dcitydb)
 
 ### Optional runtime variables
 * VAR_param_&lt;postgres parameter name&gt;
