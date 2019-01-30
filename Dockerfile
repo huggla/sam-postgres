@@ -14,7 +14,7 @@ ARG BUILDCMDS=\
 "&& mkdir bin "\
 "&& cd bin "\
 "&& ln -s ../../bin/* ./"
-ARG EXECUTABLES="/usr/bin/postgres"
+ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS-tds_fdw"
 
 #--------Generic template (don't edit)--------
@@ -32,6 +32,7 @@ ARG DOWNLOADSDIR
 ARG MAKEDIRS
 ARG MAKEFILES
 ARG EXECUTABLES
+ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
 #---------------------------------------------
