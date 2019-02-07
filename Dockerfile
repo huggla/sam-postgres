@@ -1,4 +1,4 @@
-ARG TAG="20190129"
+ARG TAG="20190206"
 ARG BASEIMAGE="huggla/postgres-alpine:$TAG"
 ARG RUNDEPS="postgresql-plpython3"
 
@@ -24,7 +24,6 @@ ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
 COPY --from=build /imagefs /
-ENV VAR_STARTUPEXECUTABLES="$STARTUPEXECUTABLES"
 #---------------------------------------------
 
 #--------Generic template (don't edit)--------
