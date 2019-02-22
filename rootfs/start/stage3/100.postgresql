@@ -5,6 +5,7 @@
 # VAR_*
 # All functions in /start/functions
 
+/usr/local/bin/postgres --version
 if [ "$isFirstRun" == "true" ]
 then
    initPgConfig
