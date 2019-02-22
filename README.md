@@ -7,11 +7,11 @@ postgis-20181204: Postgis 2.5.0.
 
 3dcity-20181204: 3DCity 4.0.1, Postgis 2.5.0.
 
-20190129-20190206: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.3+, Freetds 1.00.111, Alpine edge.
+20190129-20190220: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.3+, Freetds 1.00.111, Alpine edge.
 
-postgis-20190129-20190206: Postgis 2.5.1.
+postgis-20190129->20190220: Postgis 2.5.1.
 
-3dcitydb-20190129-20190206: 3DCityDB 4.0.1, Postgis 2.5.1.
+3dcitydb-20190129->20190220: 3DCityDB 4.0.1, Postgis 2.5.1.
 
 ## Environment variables
 ### pre-set runtime variables
