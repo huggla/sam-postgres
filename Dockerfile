@@ -1,4 +1,4 @@
-ARG TAG="20190206"
+ARG TAG="20190220"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
 ARG RUNDEPS="postgresql-plpython3"
 
@@ -23,7 +23,11 @@ ARG MAKEFILES
 ARG EXECUTABLES
 ARG STARTUPEXECUTABLES
 ARG EXPOSEFUNCTIONS
+ARG GID0WRITABLES
+ARG GID0WRITABLESRECURSIVE
+ARG LINUXUSEROWNED
 COPY --from=build /imagefs /
+RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED || true
 #---------------------------------------------
 
 #--------Generic template (don't edit)--------
