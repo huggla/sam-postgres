@@ -13,7 +13,8 @@ ARG BUILDCMDS=\
 "&& rm bin "\
 "&& mkdir bin "\
 "&& cd bin "\
-"&& ln -s ../../bin/* ./"
+"&& ln -s ../../bin/* ./ "\
+"&& chmod g+X /usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS-tds_fdw"
 
