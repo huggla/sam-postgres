@@ -6,7 +6,7 @@ ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb
 ARG BUILDCMDS=\
 "   cp -a \$cloneGitsDir/3dcitydb/PostgreSQL/SQLScripts/* /imagefs/initdb/ "\
 "&& mv /imagefs/initdb/DROP_DB.sql /imagefs/initdb/dropdb/ "\
-"&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/045.template_3dcity.sql"
+"&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/045.template_3dcitydb.sql"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
