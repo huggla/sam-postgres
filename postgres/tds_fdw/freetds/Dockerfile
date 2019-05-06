@@ -5,7 +5,7 @@ FROM huggla/alpine as alpine
 ARG BUILDDEPS="build-base libressl-dev linux-headers readline-dev unixodbc-dev libtool gettext"
 ARG RUNDEPS="libressl2.7-libssl unixodbc"
 ARG FREETDS_VERSION="patched"
-ARG DESTDIR="/apps/freetds"
+ARG DESTDIR="/copy-src/freetds"
 
 RUN downloadDir="$(mktemp -d)" \
  && wget -O $downloadDir/freetds.tar.gz "http://www.freetds.org/files/stable/freetds-$FREETDS_VERSION.tar.gz" \
@@ -27,8 +27,8 @@ RUN downloadDir="$(mktemp -d)" \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/lib/*.so $DESTDIR/usr/lib/*.a $DESTDIR-dev/usr/lib/ \
  && rm -rf $DESTDIR/usr/share \
- && echo "$RUNDEPS" > /apps/RUNDEPS-freetds
+ && echo "$RUNDEPS" > /copy-src/RUNDEPS-freetds.txt
 
 FROM huggla/busybox:$TAG as image
 
-COPY --from=alpine /apps /
+COPY --from=alpine /copy-src /
