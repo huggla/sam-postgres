@@ -27,7 +27,7 @@ RUN downloadDir="$(mktemp -d)" \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/lib/*.so $DESTDIR/usr/lib/*.a $DESTDIR-dev/usr/lib/ \
  && rm -rf $DESTDIR/usr/share \
- && echo "$RUNDEPS" > $DESTDIR-deps/RUNDEPS-freetds.txt
+ && echo "$RUNDEPS" >> $DESTDIR/RUNDEPS.txt
 
 FROM huggla/busybox:$TAG as image
 
