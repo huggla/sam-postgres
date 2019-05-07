@@ -1,13 +1,10 @@
 ARG TAG="20190503"
 ARG FREETDS_VERSION="1.1.6"
-ARG CONTENTIMAGE1="huggla/freetds:$FREETDS_VERSION"
-ARG CONTENTSOURCE1="/freetds*"
+ARG BASEIMAGE="huggla/freetds:$FREETDS_VERSION"
 ARG CLONEGITS="https://github.com/tds-fdw/tds_fdw.git"
 ARG BUILDDEPS="postgresql-dev git make g++ libressl2.7-libssl unixodbc gettext"
-ARG DESTDIR="/tds_fdw"
 ARG BUILDCMDS=\
-"   mv /freetds/* /freetds-dev/* / "\
-"&& cd tds_fdw "\
+"   cd tds_fdw "\
 "&& make USE_PGXS=1 "\
 "&& make USE_PGXS=1 install"
 
