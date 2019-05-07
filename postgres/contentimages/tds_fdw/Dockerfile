@@ -27,6 +27,8 @@ ARG CONTENTSOURCE3
 ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ARG CONTENTDESTINATION3
 ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
+ARG DESTDIR
+ARG DESTDIR="${DESTDIR:-/app}"
 ARG CLONEGITSDIR
 ARG DOWNLOADSDIR
 ARG MAKEDIRS
@@ -41,35 +43,8 @@ ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
 #---------------------------------------------
 
-
-
-
 #--------Generic template (don't edit)--------
-FROM ${CONTENTIMAGE1:-scratch} as content1
-FROM ${BUILDIMAGE:-huggla/alpine} as build
-ARG NAME
-ARG DESTDIR="/imagefs/$NAME"
-COPY --from=build /imagefs /
+USER starter
+ONBUILD USER root
 #---------------------------------------------
 
-
-
-
-COPY --from=freetds /freetds /freetds-dev /
-
-RUN apk add $BUILDDEPS \
- && buildDir="$(mktemp -d)" \
- && cd $buildDir \
- && git clone https://github.com/tds-fdw/tds_fdw.git \
- && cd tds_fdw \
- && make USE_PGXS=1 \
- && make USE_PGXS=1 install
-
-COPY --from=freetds /freetds $DESTDIR
-COPY --from=freetds /RUNDEPS-freetds.txt $DESTDIR/RUNDEPS-tds_fdw
-
-FROM huggla/busybox:$TAG as image
-
-ARG DESTDIR
-
-COPY --from=alpine $DESTDIR $DESTDIR
