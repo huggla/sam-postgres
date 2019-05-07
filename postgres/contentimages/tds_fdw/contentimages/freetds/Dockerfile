@@ -31,4 +31,4 @@ RUN downloadDir="$(mktemp -d)" \
 
 FROM huggla/busybox:$TAG as image
 
-COPY --from=alpine /copy-src /
+COPY --from=alpine /copy-src /copy-src/* /
