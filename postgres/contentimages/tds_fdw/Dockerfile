@@ -1,4 +1,3 @@
-ARG TAG="20190503"
 ARG FREETDS_VERSION="1.1.6"
 ARG BASEIMAGE="huggla/freetds:$FREETDS_VERSION"
 ARG CLONEGITS="https://github.com/tds-fdw/tds_fdw.git"
