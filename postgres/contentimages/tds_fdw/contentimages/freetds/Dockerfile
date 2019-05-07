@@ -5,7 +5,7 @@ FROM huggla/alpine as alpine
 ARG BUILDDEPS="build-base libressl-dev linux-headers readline-dev unixodbc-dev libtool gettext"
 ARG RUNDEPS="libressl2.7-libssl unixodbc"
 ARG FREETDS_VERSION="patched"
-ARG DESTDIR="/copy-src/freetds"
+ARG DESTDIR="/copy-src/app"
 
 RUN downloadDir="$(mktemp -d)" \
  && wget -O $downloadDir/freetds.tar.gz "http://www.freetds.org/files/stable/freetds-$FREETDS_VERSION.tar.gz" \
@@ -20,14 +20,14 @@ RUN downloadDir="$(mktemp -d)" \
  && sed -i '28i#include <sys/stat.h>' ./src/apps/fisql/fisql.c \
  && ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr \
  && make \
- && mkdir -p $DESTDIR-dev/usr/lib \
+ && mkdir -p $DESTDIR-dev/usr/lib $DESTDIR-deps \
  && make -j1 install \
  && rm -rf $buildDir \
  && apk --purge del $BUILDDEPS \
  && mv $DESTDIR/usr/include $DESTDIR-dev/usr/ \
  && mv $DESTDIR/usr/lib/*.so $DESTDIR/usr/lib/*.a $DESTDIR-dev/usr/lib/ \
  && rm -rf $DESTDIR/usr/share \
- && echo "$RUNDEPS" > /copy-src/RUNDEPS-freetds.txt
+ && echo "$RUNDEPS" > $DESTDIR-deps/RUNDEPS-freetds.txt
 
 FROM huggla/busybox:$TAG as image
 
