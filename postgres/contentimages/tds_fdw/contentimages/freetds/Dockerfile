@@ -16,6 +16,8 @@ ARG BUILDCMDS=\
 #"&& make install "\
 "&& for dir in \$MAKEDIRS; "\
 "   do "\
+"      echo \$dir; "\
+"      echo \${dir#/buildfs}; "\
 "      mkdir -p \"\${dir#/buildfs}\" \"/buildfs\${dir#/buildfs}\"; "\
 "   done "\
 "&& ls -la /buildfs "\
