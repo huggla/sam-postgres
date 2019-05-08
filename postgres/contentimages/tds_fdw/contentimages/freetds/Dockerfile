@@ -11,12 +11,14 @@ ARG BUILDCMDS=\
 "&& sed -i '96i' ./src/tds/tls.c "\
 "&& sed -i '97i#ifndef TLS_ST_OK' ./src/tds/tls.c "\
 "&& sed -i '28i#include <sys/stat.h>' ./src/apps/fisql/fisql.c "\
-"&& ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr "\
-"&& make "\
-"&& make install "\
+#"&& ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr "\
+#"&& make "\
+#"&& make install "\
 "&& ls -la /buildfs "\
 "&& ls -la /buildfs/usr "\
 "&& echo \$DESTDIR "\
+"&& echo $MAKEDIRS "\
+"&& echo \$MAKEDIRS "\
 "&& ls -la \$DESTDIR"
 #"&& mv \"\$DESTDIR/usr/include\" \"\$DESTDIR-dev/usr/\" "\
 #"&& mv \"\$DESTDIR/usr/lib/*.so\" \"\$DESTDIR/usr/lib/*.a\" \"\$DESTDIR-dev/usr/lib/\" "\
