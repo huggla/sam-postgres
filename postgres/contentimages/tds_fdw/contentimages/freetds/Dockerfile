@@ -6,7 +6,8 @@ ARG DOWNLOADS="http://www.freetds.org/files/stable/freetds-$FREETDS_VERSION.tar.
 ARG BUILDDEPS="build-base libressl-dev linux-headers readline-dev unixodbc-dev libtool gettext"
 ARG RUNDEPS="libressl2.7-libssl unixodbc"
 ARG BUILDCMDS=\
-"   sed -i '95i#endif' ./src/tds/tls.c "\
+"   cd freetds-$FREETDS_VERSION "\
+"&& sed -i '95i#endif' ./src/tds/tls.c "\
 "&& sed -i '96i' ./src/tds/tls.c "\
 "&& sed -i '97i#ifndef TLS_ST_OK' ./src/tds/tls.c "\
 "&& sed -i '28i#include <sys/stat.h>' ./src/apps/fisql/fisql.c "\
