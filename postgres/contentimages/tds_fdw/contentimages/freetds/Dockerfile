@@ -14,6 +14,10 @@ ARG BUILDCMDS=\
 #"&& ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr "\
 #"&& make "\
 #"&& make install "\
+"&& for dir in $MAKEDIRS; "\
+"   do "\
+"      mkdir -p "${dir#/buildfs}" "/buildfs${dir#/buildfs}"; "\
+"   done "\
 "&& ls -la /buildfs "\
 "&& ls -la /buildfs/usr "\
 "&& echo \$DESTDIR "\
