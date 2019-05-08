@@ -15,6 +15,8 @@ ARG BUILDCMDS=\
 "&& make "\
 "&& make install "\
 "&& ls -la /buildfs "\
+"&& ls -la /buildfs/usr "\
+"&& echo \$DESTDIR "\
 "&& ls -la \$DESTDIR"
 #"&& mv \"\$DESTDIR/usr/include\" \"\$DESTDIR-dev/usr/\" "\
 #"&& mv \"\$DESTDIR/usr/lib/*.so\" \"\$DESTDIR/usr/lib/*.a\" \"\$DESTDIR-dev/usr/lib/\" "\
