@@ -13,7 +13,9 @@ ARG BUILDCMDS=\
 "&& sed -i '28i#include <sys/stat.h>' ./src/apps/fisql/fisql.c "\
 "&& ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr "\
 "&& make "\
-"&& make install"
+"&& make install "\
+"&& ln -la /buildfs "\
+"&& ln -la \$DESTDIR"
 #"&& mv \"\$DESTDIR/usr/include\" \"\$DESTDIR-dev/usr/\" "\
 #"&& mv \"\$DESTDIR/usr/lib/*.so\" \"\$DESTDIR/usr/lib/*.a\" \"\$DESTDIR-dev/usr/lib/\" "\
 #"&& rm -rf \"\$DESTDIR/usr/share\""
