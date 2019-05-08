@@ -14,9 +14,9 @@ ARG BUILDCMDS=\
 "&& ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-msdblib --with-openssl=/usr --enable-odbc --with-unixodbc=/usr "\
 "&& make "\
 "&& make install "\
-"&& mv \"\$DESTDIR/usr/include\" \"\$DESTDIR-dev/usr/\" "\
-"&& mv \"\$DESTDIR/usr/lib/*.so\" \"\$DESTDIR/usr/lib/*.a\" \"\$DESTDIR-dev/usr/lib/\" "\
-"&& rm -rf \"\$DESTDIR/usr/share\""
+"&& mv \$DESTDIR/usr/include \$DESTDIR-dev/usr/ "\
+"&& mv \$DESTDIR/usr/lib/*.so \$DESTDIR/usr/lib/*.a \$DESTDIR-dev/usr/lib/ "\
+"&& rm -rf \$DESTDIR/usr/share"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
