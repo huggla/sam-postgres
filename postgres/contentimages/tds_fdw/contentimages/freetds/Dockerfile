@@ -16,7 +16,8 @@ ARG BUILDCMDS=\
 "&& make install "\
 "&& mv \$DESTDIR/usr/include \$DESTDIR-dev/usr/ "\
 "&& mv \$DESTDIR/usr/lib/*.so \$DESTDIR/usr/lib/*.a \$DESTDIR-dev/usr/lib/ "\
-"&& rm -rf \$DESTDIR/usr/share"
+"&& rm -rf \$DESTDIR/usr/share "\
+"&& ls -lar /imagefs"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
