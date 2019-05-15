@@ -6,14 +6,14 @@ ARG CONTENTDESTINATION1="/initfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
-ARG MAKEDIRS="/usr/local/bin"
 ARG BUILDCMDS=\
 "   cd /buildfs/usr "\
-"&& find * -type d ! -name bin ! -name local -maxdepth 1 -exec cd /buildfs/usr/local \\; -exec ln -s ../../usr/{} ./ \\; "\
+"&& find * -type d ! -name include ! -name bin ! -name local -maxdepth 1 -exec cd /buildfs/usr/local && ln -s ../../usr/{} ./ + "\
 "&& cd /buildfs/usr/bin "\
-"&& find * ! -type l ! -name postgres -maxdepth 1 -exec cd /buildfs/usr/local/bin \\; -exec ln -s ../../bin/{} ./ \\; "\
+"&& find * ! -type l ! -name postgres -maxdepth 1 -exec cd /buildfs/usr/local/bin && ln -s ../../bin/{} ./ + "\
 "&& chmod g+X /buildfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
+ARG REMOVEDIRS="/usr/include"
 ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS.txt"
 
 #--------Generic template (don't edit)--------
