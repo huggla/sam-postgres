@@ -2,22 +2,22 @@ ARG TAG="20190503"
 ARG TDS_FDW_VERSION="2.0.0-alpha3"
 ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
-ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
+ARG CONTENTDESTINATION1="/initfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG MAKEDIRS="/usr/local"
 ARG BUILDCMDS=\
-"   cd /imagefs/usr/local "\
+"   cd /buildfs/usr/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
 "&& mkdir bin "\
 "&& cd bin "\
 "&& ln -s ../../bin/* ./ "\
-"&& chmod g+X /imagefs/usr/bin/*"
+"&& chmod g+X /buildfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
-ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS-tds_fdw"
+ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS.txt"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
@@ -29,15 +29,15 @@ FROM ${BASEIMAGE:-huggla/base:$TAG} as image
 ARG CONTENTSOURCE1
 ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
 ARG CONTENTDESTINATION1
-ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/buildfs/}"
+ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/}"
 ARG CONTENTSOURCE2
 ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
 ARG CONTENTDESTINATION2
-ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/buildfs/}"
+ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/}"
 ARG CONTENTSOURCE3
 ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
 ARG CONTENTDESTINATION3
-ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/buildfs/}"
+ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/}"
 ARG CLONEGITSDIR
 ARG DOWNLOADSDIR
 ARG MAKEDIRS
