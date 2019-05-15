@@ -8,16 +8,10 @@ ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG MAKEDIRS="/usr/local"
 ARG BUILDCMDS=\
-"   mv /buildfs/usr/local /buildfs/tmp/local "\
-"&& cd /buildfs/tmp/local "\
-"&& rm -rf bin "\
-"&& ln -s ../../usr/* ./ "\
-"&& rm bin "\
-"&& mkdir bin "\
-"&& cd / "\
-"&& mv /buildfs/tmp/local /buildfs/usr/local "\
-"&& cd /buildfs/usr/local/bin "\
-"&& ln -s ../../bin/* ./ "\
+"   cd /buildfs/usr "\
+"&& find * -type d ! -name bin ! -name local -maxdepth 1 -exec cd /buildfs/usr/local \&\& ln -s ../../usr/{} ./ + "\
+"&& cd /buildfs/usr/bin "\
+"&& find * ! -type l ! -name postgres -maxdepth 1 -exec cd /buildfs/usr/local/bin \&\& ln -s ../../bin/{} ./ + "\
 "&& chmod g+X /buildfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS.txt"
