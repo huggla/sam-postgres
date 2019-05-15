@@ -1,8 +1,9 @@
-ARG TAG="20190220"
+ARG TAG="20190503"
+ARG TDS_FDW_VERSION="2.0.0-alpha3"
 ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/buildfs/usr/share/postgresql/extension"
-ARG CONTENTIMAGE2="huggla/tds_fdw:$TAG"
+ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/tds_fdw"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG MAKEDIRS="/usr/local"
@@ -47,8 +48,8 @@ ARG EXPOSEFUNCTIONS
 ARG GID0WRITABLES
 ARG GID0WRITABLESRECURSIVE
 ARG LINUXUSEROWNED
+ARG LINUXUSEROWNEDRECURSIVE
 COPY --from=build /imagefs /
-RUN [ -n "$LINUXUSEROWNED" ] && chown 102 $LINUXUSEROWNED || true
 #---------------------------------------------
 
 ARG CONFIG_DIR="/etc/postgres"
