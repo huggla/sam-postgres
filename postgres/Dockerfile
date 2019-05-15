@@ -8,12 +8,15 @@ ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG MAKEDIRS="/usr/local"
 ARG BUILDCMDS=\
-"   cd /buildfs/usr/local "\
+"   mv /buildfs/usr/local /buildfs/tmp/local "\
+"&& cd /buildfs/tmp/local "\
 "&& rm -rf bin "\
 "&& ln -s ../../usr/* ./ "\
 "&& rm bin "\
 "&& mkdir bin "\
-"&& cd bin "\
+"&& cd / "\
+"&& mv /buildfs/tmp/local /buildfs/usr/local "\
+"&& cd /buildfs/usr/local/bin "\
 "&& ln -s ../../bin/* ./ "\
 "&& chmod g+X /buildfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
