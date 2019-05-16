@@ -1,4 +1,5 @@
 ARG TAG="20190503"
+ARG BUILDIMAGE="huggla/build:test"
 ARG TDS_FDW_VERSION="2.0.0-alpha3"
 ARG CONTENTIMAGE1="huggla/pgagent:$TAG"
 ARG CONTENTSOURCE1="/pgagent/usr/share/postgresql/extension"
