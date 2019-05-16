@@ -1,4 +1,5 @@
 ARG TAG="20190503"
+ARG BUILDIMAGE="huggla/build:test"
 ARG FREETDS_VERSION="1.1.6"
 ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG MAKEDIRS="\$DESTDIR-dev/usr/lib"
