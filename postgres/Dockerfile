@@ -12,6 +12,7 @@ ARG BUILDCMDS=\
 "   cd /buildfs/usr/local "\
 "&& ls -la /initfs/lib "\
 "&& ls -la /buildfs/lib "\
+"&& ls -la /imagefs /imagefs/lib || true "\
 "&& ln -s ../lib ../share ./ "\
 "&& cd /buildfs/usr/local/bin "\
 "&& find ../../bin ! -type l ! -name postgres ! -name ../../bin -maxdepth 1 -exec ln -s {} ./ + "\
