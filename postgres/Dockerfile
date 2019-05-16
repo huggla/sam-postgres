@@ -10,6 +10,8 @@ ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG BUILDCMDS=\
 "   cd /buildfs/usr/local "\
+"&& ls -la /initfs/lib "\
+"&& ls -la /buildfs/lib "\
 "&& ln -s ../lib ../share ./ "\
 "&& cd /buildfs/usr/local/bin "\
 "&& find ../../bin ! -type l ! -name postgres ! -name ../../bin -maxdepth 1 -exec ln -s {} ./ + "\
