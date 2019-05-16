@@ -7,15 +7,14 @@ ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/app"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG BUILDCMDS=\
-"   cd /buildfs/usr "\
-"&& ls -la /initfs/lib /buildfs/lib ./ ./local "\
-"&& find * -type d ! -name include ! -name bin ! -name local -maxdepth 1 -exec ln -s ./{} ./local/ ; "\
-"&& cd /buildfs/usr/bin "\
-"&& find * ! -type l ! -name postgres -maxdepth 1 -exec ln -s ./{} ../local/bin/ ; "\
+"   cd /buildfs/usr/local "\
+"&& ln -s ../bin ../lib ../share ./ "\
+"&& cd /buildfs/usr/local/bin "\
+"&& find ../../bin ! -type l ! -name postgres ! -name ../../bin -maxdepth 1 -exec ln -s {} ./ + "\
 "&& chmod g+X /buildfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEDIRS="/usr/include"
-ARG REMOVEFILES="/usr/local/postgres /etc/freetds.conf /RUNDEPS.txt"
+ARG REMOVEFILES="/etc/freetds.conf /RUNDEPS.txt"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
