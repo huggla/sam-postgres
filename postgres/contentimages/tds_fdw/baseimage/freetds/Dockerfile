@@ -1,4 +1,4 @@
-ARG TAG="20190503"
+ARG TAG="20190517"
 ARG FREETDS_VERSION="1.1.6"
 ARG MAKEDIRS="\$DESTDIR-dev/usr/lib"
 ARG DOWNLOADS="http://www.freetds.org/files/stable/freetds-$FREETDS_VERSION.tar.gz"
