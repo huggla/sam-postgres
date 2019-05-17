@@ -1,9 +1,9 @@
-ARG TAG="20190503"
+ARG TAG="20190517"
 ARG BASEIMAGE="huggla/postgres-alpine:$TAG"
 ARG ADDREPOS="http://dl-cdn.alpinelinux.org/alpine/edge/testing"
 ARG RUNDEPS="postgis"
 ARG BUILDCMDS=\
-"   cd /buildfs/usr/local "\
+"   cd /imagefs/usr/local "\
 "&& rm -rf lib share "\
 "&& ln -sf ../../usr/lib lib "\
 "&& ln -sf ../../usr/share share "
