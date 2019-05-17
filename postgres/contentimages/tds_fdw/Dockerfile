@@ -1,7 +1,5 @@
-ARG BUILDIMAGE="huggla/build:test"
 ARG FREETDS_VERSION="1.1.6"
-#ARG BASEIMAGE="huggla/freetds:$FREETDS_VERSION"
-ARG BASEIMAGE="huggla/freetds:test"
+ARG BASEIMAGE="huggla/freetds:$FREETDS_VERSION"
 ARG CLONEGITS="https://github.com/tds-fdw/tds_fdw.git"
 ARG BUILDDEPS="postgresql-dev git make g++ libressl2.7-libssl unixodbc gettext"
 ARG BUILDCMDS=\
