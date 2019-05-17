@@ -1,7 +1,5 @@
 ARG TAG="20190503"
-ARG BUILDIMAGE="huggla/build:test"
 ARG FREETDS_VERSION="1.1.6"
-ARG BASEIMAGE="huggla/busybox:$TAG"
 ARG MAKEDIRS="\$DESTDIR-dev/usr/lib"
 ARG DOWNLOADS="http://www.freetds.org/files/stable/freetds-$FREETDS_VERSION.tar.gz"
 ARG BUILDDEPS="build-base libressl-dev linux-headers readline-dev unixodbc-dev libtool gettext"
@@ -16,8 +14,8 @@ ARG BUILDCMDS=\
 "&& make "\
 "&& make install "\
 "&& mv \$DESTDIR/usr/include \$DESTDIR-dev/usr/ "\
-"&& mv \$DESTDIR/usr/lib/*.so \$DESTDIR/usr/lib/*.a \$DESTDIR-dev/usr/lib/ "\
-"&& rm -rf \$DESTDIR/usr/share"
+"&& mv \$DESTDIR/usr/lib/*.so \$DESTDIR/usr/lib/*.a \$DESTDIR-dev/usr/lib/"
+ARG REMOVEDIRS="\$DESTDIR/usr/share"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
