@@ -15,7 +15,7 @@ ARG BUILDCMDS=\
 "&& chmod g+X /imagefs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEDIRS="/usr/include"
-ARG REMOVEFILES="/etc/freetds.conf /RUNDEPS.txt"
+ARG REMOVEFILES="/etc/freetds.conf"
 
 #--------Generic template (don't edit)--------
 FROM ${CONTENTIMAGE1:-scratch} as content1
