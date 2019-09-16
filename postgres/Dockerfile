@@ -1,55 +1,48 @@
-ARG TAG="20190517"
+# =========================================================================
+# Init
+# =========================================================================
+# ARGs (can be passed to Build/Final) <BEGIN>
+ARG TAG="20190911"
 ARG PGAGENT_VERSION="4.0.0"
 ARG TDS_FDW_VERSION="2.0.0-alpha3"
 ARG CONTENTIMAGE1="huggla/pgagent:$PGAGENT_VERSION"
 ARG CONTENTSOURCE1="/app/usr/share/postgresql/extension"
-ARG CONTENTDESTINATION1="/initfs/usr/share/postgresql/extension"
+ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/app"
+ARG CONTENTDESTINATION2="/finalfs/"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
-ARG BUILDCMDS=\
-"   cd /imagefs/usr/local "\
+ARG FINALCMDS=\
+"   cd /finalfs/usr/local "\
 "&& ln -s ../lib ../share ./ "\
-"&& cd /imagefs/usr/local/bin "\
+"&& cd /finalfs/usr/local/bin "\
 "&& find ../../bin ! -type l ! -name postgres ! -name ../../bin -maxdepth 1 -exec ln -s {} ./ + "\
-"&& chmod g+X /imagefs/usr/bin/*"
+"&& chmod g+X /finalfs/usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEDIRS="/usr/include"
 ARG REMOVEFILES="/etc/freetds.conf"
+# ARGs (can be passed to Build/Final) </END>
 
-#--------Generic template (don't edit)--------
+# Generic template (don't edit) <BEGIN>
 FROM ${CONTENTIMAGE1:-scratch} as content1
 FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${CONTENTIMAGE3:-scratch} as content3
+FROM ${CONTENTIMAGE4:-scratch} as content4
 FROM ${INITIMAGE:-${BASEIMAGE:-huggla/base:$TAG}} as init
-FROM ${BUILDIMAGE:-huggla/build} as build
-FROM ${BASEIMAGE:-huggla/base:$TAG} as image
-ARG CONTENTSOURCE1
-ARG CONTENTSOURCE1="${CONTENTSOURCE1:-/}"
-ARG CONTENTDESTINATION1
-ARG CONTENTDESTINATION1="${CONTENTDESTINATION1:-/}"
-ARG CONTENTSOURCE2
-ARG CONTENTSOURCE2="${CONTENTSOURCE2:-/}"
-ARG CONTENTDESTINATION2
-ARG CONTENTDESTINATION2="${CONTENTDESTINATION2:-/}"
-ARG CONTENTSOURCE3
-ARG CONTENTSOURCE3="${CONTENTSOURCE3:-/}"
-ARG CONTENTDESTINATION3
-ARG CONTENTDESTINATION3="${CONTENTDESTINATION3:-/}"
-ARG CLONEGITSDIR
-ARG DOWNLOADSDIR
-ARG MAKEDIRS
-ARG MAKEFILES
-ARG EXECUTABLES
-ARG STARTUPEXECUTABLES
-ARG EXPOSEFUNCTIONS
-ARG GID0WRITABLES
-ARG GID0WRITABLESRECURSIVE
-ARG LINUXUSEROWNED
-ARG LINUXUSEROWNEDRECURSIVE
-COPY --from=build /imagefs /
-#---------------------------------------------
+# Generic template (don't edit) </END>
 
+# =========================================================================
+# Build
+# =========================================================================
+# Generic template (don't edit) <BEGIN>
+FROM ${BUILDIMAGE:-huggla/build:$TAG} as build
+FROM ${BASEIMAGE:-huggla/base:$TAG} as final
+COPY --from=build /finalfs /
+# Generic template (don't edit) </END>
+
+# =========================================================================
+# Final
+# =========================================================================
 ARG CONFIG_DIR="/etc/postgres"
 
 ENV VAR_LINUX_USER="postgres" \
@@ -69,9 +62,10 @@ ENV VAR_LINUX_USER="postgres" \
     VAR_FINAL_COMMAND="postgres --config_file=\"\$VAR_CONFIG_FILE\"" \
     VAR_FREETDS_CONF="[global]\\ntds version=auto\\ntext size=64512"
 
-#--------Generic template (don't edit)--------
+STOPSIGNAL SIGINT
+
+# Generic template (don't edit) <BEGIN>
 USER starter
 ONBUILD USER root
-#---------------------------------------------
+# Generic template (don't edit) </END>
 
-STOPSIGNAL SIGINT
