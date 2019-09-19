@@ -13,11 +13,11 @@ ARG CONTENTSOURCE2="/app"
 ARG CONTENTDESTINATION2="/finalfs/"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG FINALCMDS=\
-"   cd /finalfs/usr/local "\
+"   cd /usr/local "\
 "&& ln -s ../lib ../share ./ "\
-"&& cd /finalfs/usr/local/bin "\
+"&& cd bin "\
 "&& find ../../bin ! -type l ! -name postgres ! -name ../../bin -maxdepth 1 -exec ln -s {} ./ + "\
-"&& chmod g+X /finalfs/usr/bin/*"
+"&& chmod g+X /usr/bin/*"
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEDIRS="/usr/include"
 ARG REMOVEFILES="/etc/freetds.conf"
