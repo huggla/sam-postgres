@@ -2,7 +2,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG TAG="20190911"
+ARG TAG="20190917"
 ARG PGAGENT_VERSION="4.0.0"
 ARG TDS_FDW_VERSION="2.0.0-alpha3"
 ARG CONTENTIMAGE1="huggla/pgagent:$PGAGENT_VERSION"
