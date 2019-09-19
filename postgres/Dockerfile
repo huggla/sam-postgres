@@ -2,14 +2,15 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG TAG="20190917"
+ARG TAG="20190919"
+ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
-ARG TDS_FDW_VERSION="2.0.0-alpha3"
-ARG CONTENTIMAGE1="huggla/pgagent:$PGAGENT_VERSION"
+ARG TDS_FDW_VERSION="$TAG"
+ARG CONTENTIMAGE1="huggla/pgagent-content:$PGAGENT_VERSION"
 ARG CONTENTSOURCE1="/app/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
-ARG CONTENTIMAGE2="huggla/tds_fdw:$TDS_FDW_VERSION"
-ARG CONTENTSOURCE2="/app"
+ARG CONTENTIMAGE2="huggla/tds_fdw-content:$TDS_FDW_VERSION"
+ARG CONTENTSOURCE2="/content-app"
 ARG CONTENTDESTINATION2="/finalfs/"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
 ARG FINALCMDS=\
