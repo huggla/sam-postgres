@@ -1,9 +1,14 @@
-ARG TAG="20190517"
+# =========================================================================
+# Init
+# =========================================================================
+# ARGs (can be passed to Build/Final) <BEGIN>
+ARG TAG="20190919"
+ARG IMAGETYPE="application"
+ARG CITYDBVERSION="v4.0.1"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
 ARG MAKEDIRS="/initdb/dropdb"
-ARG CITYDBVERSION="v4.0.1"
 ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
-ARG BUILDCMDS=\
+ARG FINALCMDS=\
 "   cp -a \$CLONEGITSDIR/3dcitydb/PostgreSQL/SQLScripts/* /imagefs/initdb/ "\
 "&& mv /imagefs/initdb/DROP_DB.sql /imagefs/initdb/dropdb/ "\
 "&& mv /imagefs/initdb/CREATE_DB.sql /imagefs/initdb/045.template_3dcitydb.sql"
