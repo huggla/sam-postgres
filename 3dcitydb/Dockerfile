@@ -4,7 +4,7 @@
 # ARGs (can be passed to Build/Final) <BEGIN>
 ARG TAG="20190919"
 ARG IMAGETYPE="application"
-ARG CITYDBVERSION="v4.0.1"
+ARG CITYDBVERSION="v4.0.2"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
 ARG MAKEDIRS="/initdb/dropdb"
 ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
