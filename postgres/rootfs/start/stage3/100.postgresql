@@ -7,9 +7,12 @@
 
 /usr/local/bin/postgres --version
 echo
-/bin/chmod 0750 "$VAR_param_data_directory"
 if [ "$isFirstRun" == "true" ]
 then
+   if [ -e "$VAR_param_data_directory" ]
+   then
+      /bin/chmod 0750 "$VAR_param_data_directory"
+   fi
    initPgConfig
    if [ ! -s "$(removeSingleQuotes "$VAR_param_data_directory")/PG_VERSION" ]
    then
