@@ -7,6 +7,7 @@
 
 /usr/local/bin/postgres --version
 echo
+/bin/chmod 0750 "$VAR_param_data_directory"
 if [ "$isFirstRun" == "true" ]
 then
    initPgConfig
