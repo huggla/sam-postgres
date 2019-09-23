@@ -22,7 +22,6 @@ ARG FINALCMDS=\
 ARG STARTUPEXECUTABLES="/usr/bin/postgres"
 ARG REMOVEDIRS="/usr/include"
 ARG REMOVEFILES="/etc/freetds.conf"
-ARG KEEPEMPTYDIRS="yes"
 # ARGs (can be passed to Build/Final) </END>
 
 # Generic template (don't edit) <BEGIN>
