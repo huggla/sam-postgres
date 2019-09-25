@@ -9,12 +9,13 @@
 echo
 if [ "$isFirstRun" == "true" ]
 then
-   if [ -e "$VAR_param_data_directory" ]
+   dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
+   if [ -e "$dataDir" ]
    then
-      /bin/chmod 0750 "$VAR_param_data_directory"
+      /bin/chmod 0750 "$dataDir"
    fi
    initPgConfig
-   if [ ! -s "$(removeSingleQuotes "$VAR_param_data_directory")/PG_VERSION" ]
+   if [ ! -s "$dataDir/PG_VERSION" ]
    then
       initPgData
    fi
