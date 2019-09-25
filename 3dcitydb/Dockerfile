@@ -2,7 +2,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG TAG="20190919"
+ARG TAG="20190925"
 ARG IMAGETYPE="application"
 ARG CITYDBVERSION="v4.0.2"
 ARG BASEIMAGE="huggla/postgres-alpine:postgis-$TAG"
