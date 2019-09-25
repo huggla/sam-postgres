@@ -2,7 +2,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG TAG="20190919"
+ARG TAG="20190925"
 ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
 ARG TDS_FDW_VERSION="$TAG"
