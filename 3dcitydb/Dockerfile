@@ -5,12 +5,12 @@
 ARG SaM_VERSION="1.0"
 ARG TAG="20191018"
 ARG IMAGETYPE="application"
-ARG CITYDBVERSION="v4.0.2"
+ARG CITYDBVERSION="4.0.2"
 ARG POSTGRES_VERSION="12.0"
 ARG POSTGIS_VERSION="2.5.3"
 ARG BASEIMAGE="huggla/postgres-alpine:$POSTGRES_VERSION-postgis-$POSTGIS_VERSION-$TAG"
 ARG MAKEDIRS="/initdb/dropdb"
-ARG CLONEGITS="'-b $CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
+ARG CLONEGITS="'-b v$CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
 ARG DESTDIR="/initdb"
 ARG BUILDCMDS='cp -a 3dcitydb/PostgreSQL/SQLScripts/* $DESTDIR/'
 ARG FINALCMDS=\
