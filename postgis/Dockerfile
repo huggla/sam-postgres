@@ -2,8 +2,8 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="1.0"
-ARG TAG="20191018"
+ARG SaM_VERSION="1.1-edge"
+ARG TAG="20191024"
 ARG POSTGRES_VERSION="12.0"
 ARG IMAGETYPE="application,base"
 ARG BASEIMAGE="huggla/postgres-alpine:$POSTGRES_VERSION-$TAG"
