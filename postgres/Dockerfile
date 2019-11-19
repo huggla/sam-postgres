@@ -3,14 +3,14 @@
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
 ARG SaM_VERSION="1.1-edge"
-ARG TAG="20191024"
+ARG TAG="20191112"
 ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
 ARG TDS_FDW_VERSION="master"
-ARG CONTENTIMAGE1="huggla/pgagent-content:$PGAGENT_VERSION-$TAG"
+ARG CONTENTIMAGE1="huggla/content-alpine:pgagent_$PGAGENT_VERSION-$TAG"
 ARG CONTENTSOURCE1="/content-app/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
-ARG CONTENTIMAGE2="huggla/tds_fdw-content:$TDS_FDW_VERSION-$TAG"
+ARG CONTENTIMAGE2="huggla/content_alpine:tds_fdw_$TDS_FDW_VERSION-$TAG"
 ARG CONTENTSOURCE2="/content-app"
 ARG CONTENTDESTINATION2="/finalfs/"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
