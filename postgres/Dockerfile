@@ -1,5 +1,5 @@
 # Secure and Minimal image of Postgres
-# https://hub.docker.com/repository/docker/huggla/sam-tomcat
+# https://hub.docker.com/repository/docker/huggla/sam-postgres
 
 # =========================================================================
 # Init
