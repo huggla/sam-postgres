@@ -1,17 +1,5 @@
-# postgres-alpine
-A small and secure Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3, 3DCityDB extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
-
-20181204: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.2+, Freetds 1.00.109, Alpine edge.
-
-postgis-20181204: Postgis 2.5.0.
-
-3dcity-20181204: 3DCity 4.0.1, Postgis 2.5.0.
-
-20190129-20190220: Postgresql 11.1, Pgagent extension 4.0, tds_fdw 2.0.0-alpha.3+, Freetds 1.00.111, Alpine edge.
-
-postgis-20190129->20190220: Postgis 2.5.1.
-
-3dcitydb-20190129->20190220: 3DCityDB 4.0.1, Postgis 2.5.1.
+# sam-postgres
+Secure and Minimal Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3, 3DCityDB extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
@@ -45,4 +33,4 @@ postgis-20190129->20190220: Postgis 2.5.1.
 Can drop all but SETPCAP, SETGID and SETUID.
 
 ## Tips
-Works with huggla/pgagent-alpine, huggla/pgadmin-alpine, huggla/pgbouncer-alpine and huggla/postgres-backup.
+Works with huggla/sam-pgagent, huggla/sam-pgadmin, huggla/sam-pgbouncer and huggla/sam-backup.
