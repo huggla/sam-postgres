@@ -1,5 +1,5 @@
 # sam-postgres
-Secure and Minimal Docker image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3, 3DCityDB extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
+Secure and Minimal Docker-image of Postgresql with Pgagent and tds_fdw extensions included. Separate tags with Postgis and/or Plpython3, 3DCityDB extensions available. Will execute .sh and .sql files located in /initdb when a new datastore is created.
 
 ## Environment variables
 ### pre-set runtime variables
