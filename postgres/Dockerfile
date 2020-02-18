@@ -1,16 +1,18 @@
+# Secure and Minimal image of Postgres
+# https://hub.docker.com/repository/docker/huggla/sam-tomcat
+
 # =========================================================================
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="1.1-edge"
-ARG TAG="20191112"
+ARG SaM_VERSION="2.0.0"
 ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
-ARG TDS_FDW_VERSION="master"
-ARG CONTENTIMAGE1="huggla/content-alpine:pgagent_$PGAGENT_VERSION-$TAG"
+ARG TDS_FDW_VERSION="20200218"
+ARG CONTENTIMAGE1="huggla/sam-content:pgagent-$PGAGENT_VERSION"
 ARG CONTENTSOURCE1="/content-app/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
-ARG CONTENTIMAGE2="huggla/content-alpine:tds_fdw_$TDS_FDW_VERSION-$TAG"
+ARG CONTENTIMAGE2="huggla/sam-content:tds_fdw-$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/content-app"
 ARG CONTENTDESTINATION2="/finalfs/"
 ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
@@ -31,15 +33,15 @@ FROM ${CONTENTIMAGE2:-scratch} as content2
 FROM ${CONTENTIMAGE3:-scratch} as content3
 FROM ${CONTENTIMAGE4:-scratch} as content4
 FROM ${CONTENTIMAGE5:-scratch} as content5
-FROM ${INITIMAGE:-${BASEIMAGE:-huggla/sam_$SaM_VERSION:base-$TAG}} as init
+FROM ${INITIMAGE:-${BASEIMAGE:-huggla/secure_and_minimal:$SaM_VERSION-base}} as init
 # Generic template (don't edit) </END>
 
 # =========================================================================
 # Build
 # =========================================================================
 # Generic template (don't edit) <BEGIN>
-FROM ${BUILDIMAGE:-huggla/sam_$SaM_VERSION:build-$TAG} as build
-FROM ${BASEIMAGE:-huggla/sam_$SaM_VERSION:base-$TAG} as final
+FROM ${BUILDIMAGE:-huggla/secure_and_minimal:$SaM_VERSION-build} as build
+FROM ${BASEIMAGE:-huggla/secure_and_minimal:$SaM_VERSION-base} as final
 COPY --from=build /finalfs /
 # Generic template (don't edit) </END>
 
