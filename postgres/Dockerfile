@@ -5,10 +5,10 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="2.0.0"
+ARG SaM_VERSION="2.0.1"
 ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
-ARG TDS_FDW_VERSION="20200218"
+ARG TDS_FDW_VERSION="20200319"
 ARG CONTENTIMAGE1="huggla/sam-content:pgagent-$PGAGENT_VERSION"
 ARG CONTENTSOURCE1="/content-app/usr/share/postgresql/extension"
 ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
