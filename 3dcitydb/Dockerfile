@@ -5,11 +5,11 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="2.0.0"
+ARG SaM_VERSION="2.0.1"
 ARG IMAGETYPE="application"
 ARG CITYDBVERSION="4.0.2"
 ARG POSTGRES_VERSION="12.2"
-ARG POSTGIS_VERSION="3.0.0"
+ARG POSTGIS_VERSION="3.0.1"
 ARG BASEIMAGE="huggla/sam-postgres:$POSTGRES_VERSION-postgis-$POSTGIS_VERSION"
 ARG MAKEDIRS="/initdb/dropdb"
 ARG CLONEGITS="'-b v$CITYDBVERSION --depth 1 https://github.com/3dcitydb/3dcitydb.git'"
