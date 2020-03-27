@@ -5,7 +5,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="2.0.0"
+ARG SaM_VERSION="2.0.1"
 ARG POSTGRES_VERSION="12.2"
 ARG IMAGETYPE="application,base"
 ARG BASEIMAGE="huggla/sam-postgres:$POSTGRES_VERSION"
