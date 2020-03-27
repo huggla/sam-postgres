@@ -5,9 +5,9 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="2.0.0"
+ARG SaM_VERSION="2.0.1"
 ARG POSTGRES_VERSION="12.2"
-ARG POSTGIS_VERSION="3.0.0"
+ARG POSTGIS_VERSION="3.0.1"
 ARG IMAGETYPE="application"
 ARG BASEIMAGE="huggla/sam-postgres:$POSTGRES_VERSION-postgis-$POSTGIS_VERSION"
 ARG RUNDEPS="postgresql-plpython3"
