@@ -15,7 +15,7 @@ ARG CONTENTDESTINATION1="/finalfs/usr/share/postgresql/extension"
 ARG CONTENTIMAGE2="huggla/sam-content:tds_fdw-$TDS_FDW_VERSION"
 ARG CONTENTSOURCE2="/content-app"
 ARG CONTENTDESTINATION2="/finalfs/"
-ARG RUNDEPS="postgresql postgresql-contrib libressl2.7-libssl unixodbc"
+ARG RUNDEPS="postgresql postgresql-contrib libressl3.0-libssl unixodbc"
 ARG FINALCMDS=\
 "   cd /usr/local "\
 "&& ln -s ../lib ../share ./ "\
