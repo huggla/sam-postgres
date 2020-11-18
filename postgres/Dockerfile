@@ -5,7 +5,7 @@
 # Init
 # =========================================================================
 # ARGs (can be passed to Build/Final) <BEGIN>
-ARG SaM_VERSION="2.0.1"
+ARG SaM_VERSION="2.0.4"
 ARG IMAGETYPE="application,base"
 ARG PGAGENT_VERSION="4.0.0"
 ARG TDS_FDW_VERSION="2.0.1"
