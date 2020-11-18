@@ -12,8 +12,8 @@ then
    dataDir="$(removeSingleQuotes "$VAR_param_data_directory")"
    if [ -e "$dataDir" ]
    then
-      /bin/chown $VAR_LINUX_USER "$dataDir"
       /bin/chmod 0750 "$dataDir"
+      /bin/chown $VAR_LINUX_USER "$dataDir"
    fi
    initPgConfig
    if [ ! -s "$dataDir/PG_VERSION" ]
