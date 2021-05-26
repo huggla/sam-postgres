@@ -12,7 +12,9 @@ ARG BASEIMAGE="huggla/sam-postgres:$POSTGRES_VERSION"
 ARG CONTENTIMAGE1="guacamole/guacamole"
 ARG CONTENTSOURCE1="/opt/guacamole/postgresql/schema/*.sql"
 ARG CONTENTDESTINATION1="/tmp/"
-ARG BUILDCMDS="cat /tmp/*.sql > /finalfs/initdb/025.guacamole_db.sql"
+ARG BUILDCMDS=\
+"   echo 'SET SESSION AUTHORIZATION guacamole_user;' > /finalfs/initdb/025.guacamole_db.sql "\
+"&& cat /tmp/*.sql >> /finalfs/initdb/025.guacamole_db.sql"
 # ARGs (can be passed to Build/Final) </END>
 
 # Generic template (don't edit) <BEGIN>
