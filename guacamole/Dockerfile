@@ -9,6 +9,10 @@ ARG SaM_VERSION="2.0.4"
 ARG POSTGRES_VERSION="12.5"
 ARG IMAGETYPE="application,base"
 ARG BASEIMAGE="huggla/sam-postgres:$POSTGRES_VERSION"
+ARG CONTENTIMAGE1="guacamole/guacamole"
+ARG CONTENTSOURCE1="/opt/guacamole/postgresql/schema/*.sql"
+ARG CONTENTDESTINATION1="/tmp/"
+ARG BUILDCMDS="cat /tmp/*.sql > /finalfs/initdb/025.guacamole_db.sql"
 # ARGs (can be passed to Build/Final) </END>
 
 # Generic template (don't edit) <BEGIN>
